@@ -1,13 +1,3 @@
----
-title: 如何在一天之内修复你的人生
-source_url: https://x.com/thedankoe
-source_author: Dan Koe
-source_platform: X (Twitter)
-language: en → zh-CN
-saved: 2026-05-27
-notes: 2026年初马斯克X平台百万美金优质长文悬赏季军，阅读量超1.7亿
----
-
 # How to Fix Your Entire Life in 1 Day / 如何在一天之内修复你的人生
 
 **作者：Dan Koe (@thedankoe)**
