@@ -329,6 +329,7 @@ function setLang(idx){
   document.body.classList.remove('lang-zh','lang-en');
   if(cls)document.body.classList.add('lang-'+cls);
   langBtn.innerHTML=idx===0?'📖 双语':idx===1?'🇨🇳 中文':'🇬🇧 English';
+  document.getElementById('swapBtn').style.display=idx===0?'':'none';
 }
 langBtn.addEventListener('click',function(){setLang((langIdx+1)%3);});
 
