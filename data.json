@@ -1,75 +1,343 @@
 {
-  "title": "How to Fix Your Entire Life in 1 Day · 一日重启协议",
-  "author": "Dan Koe · 译：CSDN/语山君",
+  "title": "LLM 驱动的自主 Agent（Autonomous Agent）综述 · LLM-Powered Autonomous Agents",
+  "author": "作者: Lilian Weng | 日期: 2023-06-23 | 阅读时间: ~31 分钟",
   "sections": [
     {
-      "id": "intro",
-      "title": "Introduction · 引言",
-      "pairs": [
-        { "en": "You're probably going to quit your new years resolution.", "zh": "你或许很快就会放弃自己的新年决心。" },
-        { "en": "And that's okay. Most people do (studies show 80-90% failure rates) because most people don't actually want to change on a deep, internal level.", "zh": "这没什么大不了的。大多数人都是如此（研究显示失败率高达80%-90%），因为大多数人并非发自内心深处渴望改变。" },
-        { "en": "They go about changing their life in the completely wrong way.", "zh": "他们改变人生的方式从一开始就完全错了。" },
-        { "en": "Human nature is a bitch, and the worst feeling is when you make a promise to yourself and can't help but break it.", "zh": "人性本就复杂难缠，而最糟糕的感受，莫过于向自己许下承诺，却身不由己地违背它。" },
-        { "en": "You start to feel helpless, and if you don't know what you're doing, you may continue the cycle for years on end: always wanting to change, but never being able to.", "zh": "你会开始感到无助，若始终不得其法，这种循环可能会持续数年：一直渴望改变，却永远无法迈出实质性的一步。" }
-      ]
-    },
-    {
       "id": "part1",
-      "title": "Part I · 身份认同",
+      "title": "Agent 系统概览",
       "pairs": [
-        { "en": "You aren't where you want to be because you aren't the person who would be there.", "zh": "你到不了想去的地方，因为你还不是能站在那里的人。" },
-        { "en": "Changing your actions to make progress toward the goal (least important, second order).", "zh": "改变行为，朝着目标推进（相对次要，属于次级因素）。" },
-        { "en": "Changing who you are so that your behavior naturally follows (most important, first order).", "zh": "改变自我，让行为自然而然随之转变（至关重要，属于核心因素）。" },
-        { "en": "Most people set a surface-level goal, hype themselves up to remain disciplined for the first few weeks, then go back to their old ways without much struggle, because they were trying to build a great life on a rotting foundation.", "zh": "大多数人只会设定流于表面的目标，在最初几周给自己打鸡血强行自律，而后便毫不费力地回到老样子——因为他们试图在腐朽的根基之上，搭建所谓的美好人生。" },
-        { "en": "If you want a specific outcome in life, you must have the lifestyle that creates that outcome long before you reach it.", "zh": "若你渴望人生达成某个特定目标，那么在实现它之前，你必须先拥有能造就这个结果的生活方式。" },
-        { "en": "When you truly change yourself, all of your habits that don't move the needle toward your goal become disgusting.", "zh": "当你真正实现自我蜕变后，所有无助于目标达成的习惯都会变得令人厌恶。" }
+        {
+          "en": "LLM Powered Autonomous Agents",
+          "zh": "在一个 LLM 驱动的自主 Agent 系统中，LLM（大语言模型）充当 Agent 的「大脑」，由三个核心组件支撑："
+        },
+        {
+          "en": "Agent System Overview",
+          "zh": "• <strong>规划</strong>：将大型任务分解为子目标，并通过反思（reflection）与精炼（refinement）从错误中学习。<br>• <strong>记忆</strong>：短期记忆（上下文学习，in-context learning）与长期记忆（外部向量存储，支持持久化回忆）。<br>• <strong>工具使用</strong>：调用外部 API 获取模型权重中不具备的额外信息或能力。"
+        },
+        {
+          "en": "Scientific Discovery Agent",
+          "zh": "---"
+        },
+        {
+          "en": "Generative Agents Simulation",
+          "zh": ""
+        },
+        {
+          "en": "Building agents with LLM (large language model) as its core controller is a cool concept. Several proof-of-concepts demos, such as AutoGPT , GPT-Engineer and BabyAGI , serve as inspiring examples. The potentiality of LLM extends beyond generating well-written copies, stories, essays and programs; it can be framed as a powerful general problem solver. \n Agent System Overview # \n In a LLM-powered autonomous agent system, LLM functions as the agent&rsquo;s brain, complemented by several key compone",
+          "zh": ""
+        },
+        {
+          "en": "Subgoal and decomposition: The agent breaks down large tasks into smaller, manageable subgoals, enabling efficient handling of complex tasks. \n Reflection and refinement: The agent can do self-criticism and self-reflection over past actions, learn from mistakes and refine them for future steps, thereby improving the quality of final results.",
+          "zh": ""
+        },
+        {
+          "en": "Short-term memory: I would consider all the in-context learning (See Prompt Engineering ) as utilizing short-term memory of the model to learn. \n Long-term memory: This provides the agent with the capability to retain and recall (infinite) information over extended periods, often by leveraging an external vector store and fast retrieval.",
+          "zh": ""
+        },
+        {
+          "en": "The agent learns to call external APIs for extra information that is missing from the model weights (often hard to change after pre-training), including current information, code execution capability, access to proprietary information sources and more.",
+          "zh": ""
+        },
+        {
+          "en": "Overview of a LLM-powered autonomous agent system.",
+          "zh": ""
+        },
+        {
+          "en": "Component One: Planning # \n A complicated task usually involves many steps. An agent needs to know what they are and plan ahead. \n Task Decomposition # \n Chain of thought (CoT; Wei et al. 2022 ) has become a standard prompting technique for enhancing model performance on complex tasks. The model is instructed to &ldquo;think step by step&rdquo; to utilize more test-time computation to decompose hard tasks into smaller and simpler steps. CoT transforms big tasks into multiple manageable tasks and",
+          "zh": ""
+        },
+        {
+          "en": "MRKL ( Karpas et al. 2022 ), short for &ldquo;Modular Reasoning, Knowledge and Language&rdquo;, is a neuro-symbolic architecture for autonomous agents. A MRKL system is proposed to contain a collection of &ldquo;expert&rdquo; modules and the general-purpose LLM works as a router to route inquiries to the best suitable expert module. These modules can be neural (e.g. deep learning models) or symbolic (e.g. math calculator, currency converter, weather API). \n They did an experiment on fine-tuning ",
+          "zh": ""
+        },
+        {
+          "en": "This benchmark evaluates the agent&rsquo;s tool use capabilities at three levels:",
+          "zh": ""
+        },
+        {
+          "en": "Case Studies # \n Scientific Discovery Agent # \n ChemCrow ( Bran et al. 2023 ) is a domain-specific example in which LLM is augmented with 13 expert-designed tools to accomplish tasks across organic synthesis, drug discovery, and materials design. The workflow, implemented in LangChain , reflects what was previously described in the ReAct and MRKLs and combines CoT reasoning with tools relevant to the tasks:",
+          "zh": ""
+        },
+        {
+          "en": "They also discussed the risks, especially with illicit drugs and bioweapons. They developed a test set containing a list of known chemical weapon agents and asked the agent to synthesize them. 4 out of 11 requests (36%) were accepted to obtain a synthesis solution and the agent attempted to consult documentation to execute the procedure. 7 out of 11 were rejected and among these 7 rejected cases, 5 happened after a Web search while 2 were rejected based on prompt only. \n Generative Agents Simula",
+          "zh": ""
+        },
+        {
+          "en": "Memory stream: is a long-term memory module (external database) that records a comprehensive list of agents&rsquo; experience in natural language.",
+          "zh": ""
+        },
+        {
+          "en": "Each element is an observation , an event directly provided by the agent.\n- Inter-agent communication can trigger new natural language statements.",
+          "zh": ""
+        },
+        {
+          "en": "Retrieval model: surfaces the context to inform the agent&rsquo;s behavior, according to relevance, recency and importance.",
+          "zh": ""
+        },
+        {
+          "en": "Reflection mechanism: synthesizes memories into higher level inferences over time and guides the agent&rsquo;s future behavior. They are higher-level summaries of past events (&lt;- note that this is a bit different from self-reflection above)",
+          "zh": ""
+        },
+        {
+          "en": "Planning is essentially in order to optimize believability at the moment vs in time. \n Prompt template: {Intro of an agent X}. Here is X's plan today in broad strokes: 1) \n Relationships between agents and observations of one agent by another are all taken into consideration for planning and reacting. \n Environment information is present in a tree structure.",
+          "zh": ""
+        },
+        {
+          "en": "The generative agent architecture. (Image source: Park et al. 2023 )",
+          "zh": ""
+        },
+        {
+          "en": "This fun simulation results in emergent social behavior, such as information diffusion, relationship memory (e.g. two agents continuing the conversation topic) and coordination of social events (e.g. host a party and invite many others). \n Proof-of-Concept Examples # \n AutoGPT has drawn a lot of attention into the possibility of setting up autonomous agents with LLM as the main controller. It has quite a lot of reliability issues given the natural language interface, but nevertheless a cool proo",
+          "zh": ""
+        },
+        {
+          "en": "Resources:\n1. Internet access for searches and information gathering.\n2. Long Term memory management.\n3. GPT-3.5 powered Agents for delegation of simple tasks.\n4. File output.",
+          "zh": ""
+        },
+        {
+          "en": "Reliability of natural language interface : Current agent system relies on natural language as an interface between LLMs and external components such as memory and tools. However, the reliability of model outputs is questionable, as LLMs may make formatting errors and occasionally exhibit rebellious behavior (e.g. refuse to follow an instruction). Consequently, much of the agent demo code focuses on parsing model output.",
+          "zh": ""
+        },
+        {
+          "en": "Weng, Lilian. (Jun 2023). &ldquo;LLM-powered Autonomous Agents&rdquo;. Lil&rsquo;Log. https://lilianweng.github.io/posts/2023-06-23-agent/.",
+          "zh": ""
+        },
+        {
+          "en": "Or \n @article{weng2023agent,\n title = &#34;LLM-powered Autonomous Agents&#34;,\n author = &#34;Weng, Lilian&#34;,\n journal = &#34;lilianweng.github.io&#34;,\n year = &#34;2023&#34;,\n month = &#34;Jun&#34;,\n url = &#34;https://lilianweng.github.io/posts/2023-06-23-agent/&#34;\n}\n References # \n [1] Wei et al. &ldquo;Chain of thought prompting elicits reasoning in large language models.&rdquo; NeurIPS 2022 \n [2] Yao et al. &ldquo;Tree of Thoughts: Dliberate Problem Solving with Large Language Models.",
+          "zh": ""
+        },
+        {
+          "en": "Nlp \n Language-Model \n Agent \n Steerability \n Prompting",
+          "zh": ""
+        }
       ]
     },
     {
       "id": "part2",
-      "title": "Part II · 潜意识目标",
+      "title": "组件一：规划",
       "pairs": [
-        { "en": "Trust only movement. Life happens at the level of events, not of words.", "zh": "只相信行动。生活发生在事件的层面，而非言语的层面。" },
-        { "en": "Real change, at its core, is about changing your subconscious goals.", "zh": "真正的改变，其核心在于改变你潜意识里的目标。" },
-        { "en": "You aren't where you want to be because you don't want to be there — your subconscious goals are protecting you from the judgment that comes with finishing and publishing your work.", "zh": "你并非真的想去那里——你的潜意识目标在保护你免受完成和发表作品带来的评判。" }
+        {
+          "en": "",
+          "zh": "<strong class=\"subhead\">任务分解</strong>"
+        },
+        {
+          "en": "",
+          "zh": "<strong>思维链（Chain of Thought, CoT）</strong> 指示模型「逐步思考」，通过增加测试时的计算量将困难任务拆解为简单步骤。同时，CoT 也揭示了模型的推理过程。"
+        },
+        {
+          "en": "",
+          "zh": "<strong>思维树（Tree of Thoughts, ToT）</strong> 扩展了 CoT，在每一步探索多个推理分支，形成树结构。搜索可采用 BFS（广度优先搜索）或 DFS（深度优先搜索），每个状态由一个分类器或多数投票评估。"
+        },
+        {
+          "en": "",
+          "zh": "任务分解可通过 LLM prompt（如 <code>\"Steps for XYZ.\\n1.\"</code>）、任务特定指令（如 <code>\"Write a story outline.\"</code>）或人工输入来实现。"
+        },
+        {
+          "en": "",
+          "zh": "<strong>LLM+P</strong> 使用外部经典规划器，以 PDDL（Planning Domain Definition Language，规划域定义语言）作为中间接口。LLM 将问题翻译为「Problem PDDL」，规划器生成规划方案，LLM 再将结果翻译回自然语言 — 本质上将规划外包给外部工具。"
+        },
+        {
+          "en": "",
+          "zh": "<strong class=\"subhead\">自我反思</strong>"
+        },
+        {
+          "en": "",
+          "zh": "<strong>ReAct</strong> 通过在动作空间中整合推理与行动，将任务特定的离散动作与自然语言统一。其 prompt 模板遵循以下循环："
+        },
+        {
+          "en": "",
+          "zh": "<pre><code><br>Thought: ...<br>Action: ...<br>Observation: ...<br>...（多次重复）<br></code></pre>"
+        },
+        {
+          "en": "",
+          "zh": "实验中，ReAct 的表现显著优于仅包含 Action 的基线模型（无 Thought 步骤）。"
+        },
+        {
+          "en": "",
+          "zh": "<strong>Reflexion</strong> 赋予 Agent 动态记忆和自我反思能力以增强推理。采用标准强化学习（RL）设置，使用二元奖励和 ReAct 式动作。每次动作后，Agent 计算一个启发式评估，可依据自我反思重置环境开始新一轮尝试。启发式用于识别低效轨迹或幻觉行为（同样的观察却重复相同动作）。自我反思使用两个（失败轨迹、理想反思）的 few-shot 示例，存入工作记忆（最多三条）。"
+        },
+        {
+          "en": "",
+          "zh": "<strong>后见之明链（Chain of Hindsight, CoH）</strong> 将模型输出序列与人类反馈标注一同呈现给模型，训练其产出逐步改进的结果。训练数据结合了 WebGPT 比较、基于人类反馈的摘要生成和人类偏好数据集。训练中加入正则化项防止过拟合，并随机遮罩 0–5% 的历史 token 以防止走捷径。"
+        },
+        {
+          "en": "",
+          "zh": "<strong>算法蒸馏（Algorithm Distillation, AD）</strong> 将类似思想应用于跨 episode 的 RL 轨迹。模型从串联的多 episode 历史中学习，本质上学习的是 RL 的<em>过程</em>而非特定任务的策略。实现近最优的上下文 RL 需要 2–4 个 episode 的多轮上下文。尽管仅使用离线 RL，AD 的性能仍接近 RL²。"
+        },
+        {
+          "en": "",
+          "zh": "---"
+        }
       ]
     },
     {
       "id": "part3",
-      "title": "Part III · 身份恐惧",
+      "title": "组件二：记忆",
       "pairs": [
-        { "en": "When your identity is threatened, your body reacts the same as a physical threat — fight or flight.", "zh": "当你的身份受到威胁时，你的身体反应和面对物理威胁一样——战或逃。" },
-        { "en": "You set a goal → perceive reality through its lens → notice helpful info → act & get feedback → behavior becomes automatic → it merges into identity → you DEFEND that identity → identity shapes new goals.", "zh": "设定目标 → 通过目标滤镜感知现实 → 注意到有帮助的信息 → 行动并接收反馈 → 行为自动化 → 融入自我身份 → 捍卫这个身份 → 身份塑造新目标。" }
+        {
+          "en": "",
+          "zh": "<strong class=\"subhead\">记忆类型</strong>"
+        },
+        {
+          "en": "",
+          "zh": "人类记忆可分为："
+        },
+        {
+          "en": "",
+          "zh": "• <strong>感觉记忆（Sensory Memory）</strong>：保留感官输入的印象数秒（图像、听觉、触觉）。<br>• <strong>短期记忆（Short-Term Memory, STM）/ 工作记忆（Working Memory）</strong>：持有约 7 项内容，持续 20–30 秒，用于认知任务。<br>• <strong>长期记忆（Long-Term Memory, LTM）</strong>：存储天数到数十年的信息，容量近乎无限。<br>• <em>外显/陈述性记忆</em>：情景记忆（事件）与语义记忆（事实）<br>• <em>内隐/程序性记忆</em>：无意识的技能与习惯"
+        },
+        {
+          "en": "",
+          "zh": "对应到 Agent 系统："
+        },
+        {
+          "en": "",
+          "zh": "• 感觉记忆 ≈ 原始输入的 embedding 表示<br>• 短期记忆 ≈ 上下文学习（受限于 context window 大小）<br>• 长期记忆 ≈ 外部向量存储 + 快速检索"
+        },
+        {
+          "en": "",
+          "zh": "<strong class=\"subhead\">最大内积搜索（MIPS）</strong>"
+        },
+        {
+          "en": "",
+          "zh": "外部记忆使用支持快速 MIPS 的向量数据库，通常通过近似最近邻（ANN）算法实现："
+        },
+        {
+          "en": "",
+          "zh": "• <strong>LSH</strong>（Locality-Sensitive Hashing，局部敏感哈希）：通过哈希将相似输入映射到同一桶。<br>• <strong>ANNOY</strong>（Approximate Nearest Neighbors Oh Yeah）：使用随机投影树。每棵树用超平面切分输入空间；搜索在所有树中遍历最近半区并聚合结果。<br>• <strong>HNSW</strong>（Hierarchical Navigable Small World，分层可导航小世界）：构建分层小世界图，在层间创建搜索捷径。搜索从顶层开始向下导航。<br>• <strong>FAISS</strong>（Facebook AI Similarity Search，Facebook AI 相似性搜索）：假设距离服从高斯分布，应用向量量化进行粗聚类后再细聚类。<br>• <strong>ScaNN</strong>（Scalable Nearest Neighbors，可扩展最近邻）：使用各向异性向量量化来保持内积相似性。"
+        },
+        {
+          "en": "",
+          "zh": "---"
+        }
+      ]
+    },
+    {
+      "id": "part4",
+      "title": "组件三：工具使用",
+      "pairs": [
+        {
+          "en": "",
+          "zh": "<strong>MRKL</strong>（Modular Reasoning, Knowledge and Language，模块化推理、知识与语言）是一种神经-符号架构，通用 LLM 将查询路由给专家模块（可以是神经网络或符号模块，如计算器、天气 API）。实验表明，LLM 在提取基础算术的参数方面存在困难，凸显了知道<em>何时以及如何使用工具</em>的关键性。"
+        },
+        {
+          "en": "",
+          "zh": "<strong>TALM</strong> 和 <strong>Toolformer</strong> 对 LM 进行微调以使用外部工具 API，根据 API 调用标注是否提升了输出质量来扩展训练数据集。"
+        },
+        {
+          "en": "",
+          "zh": "ChatGPT 插件和 OpenAI API function calling 是工具增强 LLM 的实践案例。"
+        },
+        {
+          "en": "",
+          "zh": "<strong>HuggingGPT</strong> 使用 ChatGPT 作为任务规划器来选择 HuggingFace 模型。其工作分四个阶段："
+        },
+        {
+          "en": "",
+          "zh": "• <strong>任务规划</strong>：LLM 解析用户请求为多个带类型、ID、依赖关系和参数的任务。<br>• <strong>模型选择</strong>：LLM 将模型选择转化为多项选择题。<br>• <strong>任务执行</strong>：专家模型执行具体任务并记录结果。<br>• <strong>响应生成</strong>：LLM 汇总执行结果返回给用户。"
+        },
+        {
+          "en": "",
+          "zh": "挑战包括效率、对长上下文窗口的依赖，以及 LLM 输出和外部服务的稳定性。"
+        },
+        {
+          "en": "",
+          "zh": "<strong>API-Bank</strong> 是一个基准测试，包含 53 个 API 工具、完整的工具增强 LLM 工作流和 264 条标注对话（568 次 API 调用）。它从三个层级评估："
+        },
+        {
+          "en": "",
+          "zh": "• <strong>Level 1</strong>：给定 API 描述，正确调用 API。<br>• <strong>Level 2</strong>：通过搜索引擎检索正确的 API，并通过文档学习使用方法。<br>• <strong>Level 3</strong>：针对模糊的用户请求规划多次 API 调用。"
+        },
+        {
+          "en": "",
+          "zh": "---"
+        }
+      ]
+    },
+    {
+      "id": "part5",
+      "title": "案例研究",
+      "pairs": [
+        {
+          "en": "",
+          "zh": "<strong class=\"subhead\">科学发现 Agent</strong>"
+        },
+        {
+          "en": "",
+          "zh": "<strong>ChemCrow</strong> 使用 LangChain 和 ReAct 模式，为 LLM 增强 13 种化学工具（有机合成、药物发现、材料设计）。在化学正确性方面，人类专家评分远高于 GPT-4，而基于 LLM 的自动评估则认为两者不相上下 — 这揭示了在需要深度专业知识的领域使用 LLM 做评估的问题。"
+        },
+        {
+          "en": "",
+          "zh": "<strong>Boiko et al. (2023)</strong> 构建了用于自主科学实验的 Agent，覆盖设计、规划和执行。当被要求开发一种新型抗癌药时，Agent 查询趋势、选择靶点、请求骨架结构并尝试合成。在安全测试中，11 个化学武器合成请求中有 4 个被接受。"
+        },
+        {
+          "en": "",
+          "zh": "<strong class=\"subhead\">生成式 Agent 模拟</strong>"
+        },
+        {
+          "en": "",
+          "zh": "<strong>Generative Agents</strong>（Park et al., 2023）在类似模拟人生的沙盒环境中设置了 25 个 LLM 驱动的虚拟角色。核心组件："
+        },
+        {
+          "en": "",
+          "zh": "• <strong>记忆流（Memory stream）</strong>：长期外部数据库，以自然语言记录观察。<br>• <strong>检索模型（Retrieval model）</strong>：基于相关性、时间衰减和重要性获取上下文。<br>• <strong>反思机制（Reflection mechanism）</strong>：随时间推移将记忆合成为更高层次的推断，通过将最近 100 条观察送入 LM 生成关键问题及答案。<br>• <strong>规划与反应（Planning & Reacting）</strong>：将反思和环境信息转化为行动，考虑角色关系和跨 Agent 观察。"
+        },
+        {
+          "en": "",
+          "zh": "模拟展现出涌现的社会行为，如信息扩散、关系记忆和事件协调。"
+        },
+        {
+          "en": "",
+          "zh": "<strong class=\"subhead\">概念验证项目</strong>"
+        },
+        {
+          "en": "",
+          "zh": "<strong>AutoGPT</strong> 使用系统消息包含约束、命令（Google 搜索、文件操作、代码执行等）、资源和性能评估指令。模型以严格 JSON 格式输出思考和指令。"
+        },
+        {
+          "en": "",
+          "zh": "<strong>GPT-Engineer</strong> 从自然语言任务描述生成完整代码仓库。首先通过对话澄清需求，然后切换到代码编写模式，系统消息强调逐步推理、以 markdown 代码块输出完整代码实现和最佳实践（Python 使用 pytest 和 dataclasses；包含 requirements.txt；Node.js 使用 package.json）。"
+        },
+        {
+          "en": "",
+          "zh": "---"
+        }
       ]
     },
     {
       "id": "part6",
-      "title": "Part VI · 一日重启协议",
+      "title": "挑战",
       "pairs": [
-        { "en": "Describe the vague, lingering dissatisfaction you've learned to live with.", "zh": "描述那种你已经学会忍受的、平淡却挥之不去的不满。" },
-        { "en": "What do you complain about repeatedly but never change?", "zh": "你反复抱怨却从不改变的是什么？" },
-        { "en": "What truth about your current life are you terrified to tell someone you deeply respect?", "zh": "关于你当前的生活，有什么真相是你害怕告诉一个你深深敬重的人的？" },
-        { "en": "Describe an ordinary Tuesday 5 years from now if nothing changes.", "zh": "如果5年什么都不变，描述一个普通的周二。" },
-        { "en": "If you could snap your fingers and live a different life in 3 years, what would an ordinary Tuesday look like?", "zh": "如果你能打个响指在3年后过上另一种生活，一个普通的周二会是什么样？" },
-        { "en": "Am I walking toward the life I dread or the life I desire?", "zh": "我在走向我讨厌的人生，还是我渴望的人生？" },
-        { "en": "When today was I most alive? When was I most numb?", "zh": "今天什么时候最有活力？什么时候最麻木？" },
-        { "en": "One-sentence anti-vision: what will I NOT let my life become?", "zh": "一句话反愿景：我绝不让我的人生变成什么。" },
-        { "en": "One-sentence minimum viable vision: what am I building?", "zh": "一句话最小可行愿景：我正在建设什么。" },
-        { "en": "1-year goal → 1-month project → 2-3 daily leverage actions", "zh": "1年目标 → 1月项目 → 每日2-3个杠杆行动。" }
+        {
+          "en": "",
+          "zh": "三个关键局限："
+        },
+        {
+          "en": "",
+          "zh": "• <strong>有限的上下文长度</strong>：限制了历史信息、详细指令和 API 调用上下文的容量。自我反思能从更长的上下文窗口中大幅受益。向量存储虽然提供了访问途径，但其表征能力不如完整的注意力机制。"
+        },
+        {
+          "en": "",
+          "zh": "• <strong>长期规划与任务分解的困难</strong>：LLM 在遇到意外错误时难以调整计划，使其不如通过试错学习的人类鲁棒。"
+        },
+        {
+          "en": "",
+          "zh": "• <strong>自然语言接口的可靠性</strong>：模型输出可能存在格式错误或表现出叛逆行为。大量 Agent 演示代码大量精力花在解析模型输出上。"
+        },
+        {
+          "en": "",
+          "zh": "---"
+        }
       ]
     },
     {
       "id": "part7",
-      "title": "Part VII · 人生游戏化",
+      "title": "引用",
       "pairs": [
-        { "en": "Victory Condition → Vision", "zh": "胜利条件 → 愿景" },
-        { "en": "Failure Penalty → Anti-Vision", "zh": "失败惩罚 → 反愿景" },
-        { "en": "Main Quest → 1-Year Goal", "zh": "主线任务 → 1年目标" },
-        { "en": "Boss Fight → 1-Month Project", "zh": "Boss战 → 1月项目" },
-        { "en": "Daily Quests → Daily Leverage Actions", "zh": "每日任务 → 每日杠杆行动" },
-        { "en": "Game Rules → Non-Negotiable Constraints", "zh": "游戏规则 → 绝不牺牲的底线" },
-        { "en": "Goals are not endpoints — they are a cognitive lens. Happiness and satisfaction lie in the process of continuous progress.", "zh": "目标并非为了「达成」而设定——它是一种认知透镜。快乐与满足，藏在不断进步的过程中。" },
-        { "en": "The only real test of intelligence is if you get what you want out of life.", "zh": "衡量一个人是否真正聪明的唯一标准，就是看他能不能搞到自己想要的人生。" }
+        {
+          "en": "",
+          "zh": "<em class=\"quote\">Weng, Lilian. (Jun 2023). \"LLM-powered Autonomous Agents\". Lil'Log. https://lilianweng.github.io/posts/2023-06-23-agent/.</em>"
+        }
       ]
     }
   ]

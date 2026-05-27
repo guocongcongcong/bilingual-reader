@@ -1,0 +1,12 @@
+{"ts":"2026-05-27T02:03:55.479Z","cmd":"goto","args":"http://localhost:8080/index.html","origin":"http://localhost:8080/index.html","durationMs":537,"status":"ok","hasCookies":false,"mode":"launched"}
+{"ts":"2026-05-27T02:03:55.605Z","cmd":"viewport","args":"1280x800","origin":"http://localhost:8080/index.html","durationMs":3,"status":"ok","hasCookies":false,"mode":"launched"}
+{"ts":"2026-05-27T02:03:58.843Z","cmd":"console","args":"","origin":"http://localhost:8080/index.html","durationMs":3,"status":"ok","hasCookies":false,"mode":"launched"}
+{"ts":"2026-05-27T02:03:58.965Z","cmd":"text","args":"","origin":"http://localhost:8080/index.html","durationMs":3,"status":"ok","hasCookies":false,"mode":"launched"}
+{"ts":"2026-05-27T02:04:13.165Z","cmd":"screenshot","args":"/tmp/bilingual-reader-full.png","origin":"http://localhost:8080/index.html","durationMs":1601,"status":"ok","hasCookies":false,"mode":"launched"}
+{"ts":"2026-05-27T02:04:20.794Z","cmd":"snapshot","args":"-d 6 -i","origin":"http://localhost:8080/index.html","durationMs":42,"status":"ok","hasCookies":false,"mode":"launched"}
+{"ts":"2026-05-27T02:04:28.486Z","cmd":"html","args":".main","origin":"http://localhost:8080/index.html","durationMs":5,"status":"ok","hasCookies":false,"mode":"launched"}
+{"ts":"2026-05-27T02:05:34.542Z","cmd":"reload","args":"","origin":"http://localhost:8080/index.html","durationMs":22,"status":"ok","hasCookies":false,"mode":"launched"}
+{"ts":"2026-05-27T02:05:36.818Z","cmd":"console","args":"","origin":"http://localhost:8080/index.html","durationMs":1,"status":"ok","hasCookies":false,"mode":"launched"}
+{"ts":"2026-05-27T02:05:46.121Z","cmd":"reload","args":"","origin":"http://localhost:8080/index.html","durationMs":19,"status":"ok","hasCookies":false,"mode":"launched"}
+{"ts":"2026-05-27T02:05:49.396Z","cmd":"console","args":"","origin":"http://localhost:8080/index.html","durationMs":0,"status":"ok","hasCookies":false,"mode":"launched"}
+{"ts":"2026-05-27T02:06:45.415Z","cmd":"html","args":".pair:first-child","origin":"http://localhost:8080/index.html","durationMs":5006,"status":"error","hasCookies":false,"mode":"launched","error":"hTML: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator('.pair:first-child')\n"}
