@@ -5,34 +5,25 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Bilingual Reader · 双语阅读</title>
 <style>
-  :root{--bg:#ffffff;--text:#1a1a2e;--accent:#4f46e5;--border:#e5e5e7}
-  body.dark{--bg:#0f0f13;--text:#e4e4ec;--accent:#818cf8;--border:#2a2a35}
+  :root{--bg:#fff;--text:#1a1a2e;--accent:#4f46e5;--border:#e5e5e7;--hl:rgba(79,70,229,.06)}
+  body.dark{--bg:#0f0f13;--text:#e4e4ec;--accent:#818cf8;--border:#2a2a35;--hl:rgba(129,140,248,.08)}
   *{box-sizing:border-box;margin:0;padding:0}
   body{background:var(--bg);color:var(--text);font-family:-apple-system,'PingFang SC',sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:80px 32px}
   h1{font-size:1.5rem;margin-bottom:6px}
-  p.sub{color:var(--accent);font-size:0.875rem;margin-bottom:48px}
-  .card{width:100%;max-width:600px;border:1px solid var(--border);border-radius:10px;padding:24px 28px;margin-bottom:14px;transition:all 0.15s;text-decoration:none;color:inherit;display:block}
-  .card:hover{border-color:var(--accent);box-shadow:0 2px 12px rgba(79,70,229,0.08)}
+  .sub{color:var(--accent);font-size:.875rem;margin-bottom:48px}
+  .card{width:100%;max-width:600px;border:1px solid var(--border);border-radius:10px;padding:24px 28px;margin-bottom:14px;transition:all .15s;text-decoration:none;color:inherit;display:block}
+  .card:hover{border-color:var(--accent);box-shadow:0 2px 12px rgba(79,70,229,.08)}
   .card h2{font-size:1.1rem;margin-bottom:6px}
-  .card p{font-size:0.84rem;color:#71717a;line-height:1.5}
-  .dark-btn{position:fixed;top:20px;right:20px;padding:6px 16px;border:1px solid var(--border);border-radius:6px;background:var(--bg);color:var(--accent);cursor:pointer;font-size:0.8rem}
+  .card p{font-size:.84rem;color:#71717a;line-height:1.5}
+  .dark-btn{position:fixed;top:20px;right:20px;padding:6px 16px;border:1px solid var(--border);border-radius:6px;background:var(--bg);color:var(--accent);cursor:pointer;font-size:.8rem}
 </style>
 </head>
 <body>
 <button class="dark-btn" onclick="document.body.classList.toggle('dark')">🌙</button>
 <h1>📖 Bilingual Reader</h1>
 <p class="sub">中英双语对照阅读 · 点击高亮 · 深色模式</p>
-
-<a class="card" href="html/How-to-Fix-Your-Entire-Life-in-1-Day.html">
-  <h2>How to Fix Your Entire Life in 1 Day</h2>
-  <p>Dan Koe · 一日重启协议 — 身份认同、潜意识目标、人生游戏化</p>
-</a>
-
-<a class="card" href="html/LLM-Powered-Autonomous-Agents.html">
-  <h2>LLM-Powered Autonomous Agents</h2>
-  <p>Lilian Weng · Agent 综述 — 规划、记忆、工具使用三大组件</p>
-</a>
-
-<p style="margin-top:32px;color:#a1a1aa;font-size:0.78rem"><a href="https://github.com/guocongcongcong/bilingual-reader" style="color:inherit">GitHub</a></p>
+<a class="card" href="agent-survey.html"><h2>LLM-Powered Autonomous Agents · LLM 驱动的自主 Agent 综述</h2><p>Lilian Weng · 2023 · Agent 系统综述 — 规划、记忆、工具使用三大核心组件</p></a>
+<a class="card" href="fix-life.html"><h2>How to Fix Your Entire Life in 1 Day · 一日重启协议</h2><p>Dan Koe · 马斯克百万悬赏季军，1.7亿阅读量的爆文 — 身份认同、潜意识目标、人生游戏化</p></a>
+<p style="margin-top:32px;color:#a1a1aa;font-size:.78rem"><a href="https://github.com/guocongcongcong/bilingual-reader" style="color:inherit">GitHub</a></p>
 </body>
 </html>
