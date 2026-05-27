@@ -9,7 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #fafafa;
+    --bg: #ffffff;
     --bg-elevated: #ffffff;
     --border: #e5e5e7;
     --text-primary: #1a1a2e;
@@ -178,7 +178,7 @@
 <header class="header">
   <h1></h1>
   <div class="author"></div>
-  <button class="swap-btn" onclick="swapColumns()" title="切换左右顺序">⇄ 中英对调</button>
+  <button class="swap-btn" onclick="swapColumns()" title="切换左右顺序">⇄ 英中互换</button>
 </header>
 
 <main class="main">
@@ -197,13 +197,6 @@ function createPairEl(pairId,enText,zhText){
   pair.className='pair';
   pair.dataset.pairId=pairId;
 
-  var enCol=document.createElement('div');
-  enCol.className='col en';
-  var enP=document.createElement('p');
-  enP.className='line';
-  enP.textContent=enText;
-  enCol.appendChild(enP);
-
   var zhCol=document.createElement('div');
   zhCol.className='col zh';
   var zhP=document.createElement('p');
@@ -211,8 +204,15 @@ function createPairEl(pairId,enText,zhText){
   zhP.textContent=zhText;
   zhCol.appendChild(zhP);
 
-  pair.appendChild(enCol);
+  var enCol=document.createElement('div');
+  enCol.className='col en';
+  var enP=document.createElement('p');
+  enP.className='line';
+  enP.textContent=enText;
+  enCol.appendChild(enP);
+
   pair.appendChild(zhCol);
+  pair.appendChild(enCol);
   return pair;
 }
 
