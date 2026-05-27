@@ -9,15 +9,15 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0a0a0b;
-    --bg-elevated: #131316;
-    --border: #1e1e24;
-    --text-primary: #e4e4e7;
-    --text-secondary: #a1a1aa;
-    --text-tertiary: #71717a;
-    --accent: #5e6ad2;
-    --accent-glow: rgba(94,106,210,0.12);
-    --highlight-bg: rgba(94,106,210,0.08);
+    --bg: #fafafa;
+    --bg-elevated: #ffffff;
+    --border: #e5e5e7;
+    --text-primary: #1a1a2e;
+    --text-secondary: #52525b;
+    --text-tertiary: #a1a1aa;
+    --accent: #4f46e5;
+    --accent-glow: rgba(79,70,229,0.08);
+    --highlight-bg: rgba(79,70,229,0.06);
     --font-en: 'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
     --font-zh: 'PingFang SC','Hiragino Sans GB','Microsoft YaHei',sans-serif;
   }
@@ -56,6 +56,20 @@
     color:var(--text-tertiary);
     font-weight:400;
   }
+
+  .swap-btn{
+    margin-top:12px;
+    padding:6px 16px;
+    border:1px solid var(--border);
+    border-radius:6px;
+    background:var(--bg-elevated);
+    color:var(--accent);
+    font-size:0.8rem;
+    font-family:inherit;
+    cursor:pointer;
+    transition:all 0.15s;
+  }
+  .swap-btn:hover{background:var(--highlight-bg);border-color:var(--accent)}
 
   .main{
     width:100%;
@@ -110,6 +124,9 @@
   .col.en{font-family:var(--font-en)}
   .col.zh{font-family:var(--font-zh)}
 
+  body.swapped .col.en{order:2}
+  body.swapped .col.zh{order:1}
+
   .line{
     font-size:16px;
     line-height:1.65;
@@ -152,6 +169,9 @@
     .section+.section .section-title{padding-top:36px}
   }
 
+  body.swapped .pair .col.en{order:2}
+  body.swapped .pair .col.zh{order:1;border-top:none;padding-top:0}
+
   @media(min-width:1200px){
     .header,.main{max-width:1040px}
     .pair{gap:48px}
@@ -163,6 +183,7 @@
 <header class="header">
   <h1></h1>
   <div class="author"></div>
+  <button class="swap-btn" onclick="swapColumns()" title="切换左右顺序">⇄ 中英对调</button>
 </header>
 
 <main class="main">
@@ -336,6 +357,12 @@ document.addEventListener('keydown',function(e){
 
 var resizeTimeout;
 var cachedData=null;
+var swapped=false;
+
+function swapColumns(){
+  swapped=!swapped;
+  document.body.classList.toggle('swapped',swapped);
+}
 
 window.addEventListener('resize',function(){
   if(!cachedData)return;
