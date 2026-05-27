@@ -22,6 +22,18 @@
     --font-zh: 'PingFang SC','Hiragino Sans GB','Microsoft YaHei',sans-serif;
   }
 
+  body.dark{
+    --bg: #0f0f13;
+    --bg-elevated: #1a1a24;
+    --border: #2a2a35;
+    --text-primary: #e4e4ec;
+    --text-secondary: #9898a8;
+    --text-tertiary: #5c5c6e;
+    --accent: #818cf8;
+    --accent-glow: rgba(129,140,248,0.1);
+    --highlight-bg: rgba(129,140,248,0.08);
+  }
+
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 
   html{font-size:16px}
@@ -69,7 +81,20 @@
     cursor:pointer;
     transition:all 0.15s;
   }
-  .swap-btn:hover{background:var(--highlight-bg);border-color:var(--accent)}
+  .swap-btn:hover,.dark-btn:hover{background:var(--highlight-bg);border-color:var(--accent)}
+
+  .dark-btn{
+    margin-top:8px;
+    padding:6px 16px;
+    border:1px solid var(--border);
+    border-radius:6px;
+    background:var(--bg-elevated);
+    color:var(--accent);
+    font-size:0.8rem;
+    font-family:inherit;
+    cursor:pointer;
+    transition:all 0.15s;
+  }
 
   .main{
     width:100%;
@@ -109,7 +134,7 @@
     transition:background 0.15s ease,border-color 0.15s ease;
   }
 
-  .pair:hover{background:rgba(0,0,0,0.02)}
+  .pair:hover{background:var(--highlight-bg)}
 
   .pair.active{
     background:var(--highlight-bg);
@@ -179,6 +204,7 @@
   <h1></h1>
   <div class="author"></div>
   <button class="swap-btn" id="swapBtn" title="切换左右顺序">⇄ 英中互换</button>
+  <button class="dark-btn" id="darkBtn" title="关灯/开灯">🌙 关灯</button>
 </header>
 
 <main class="main">
@@ -276,6 +302,17 @@ document.getElementById('swapBtn').addEventListener('click',function(){
   swapped=!swapped;
   document.body.classList.toggle('swapped',swapped);
 });
+
+var darkBtn=document.getElementById('darkBtn');
+var isDark=localStorage.getItem('dark')==='1';
+function setDark(on){
+  isDark=on;
+  document.body.classList.toggle('dark',on);
+  darkBtn.innerHTML=on?'☀️ 开灯':'🌙 关灯';
+  localStorage.setItem('dark',on?'1':'0');
+}
+if(isDark)setDark(true);
+darkBtn.addEventListener('click',function(){setDark(!isDark);});
 
 document.fonts.ready.then(function(){
   return fetch('./data.json');
