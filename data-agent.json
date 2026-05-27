@@ -7,28 +7,16 @@
       "title": "Agent 系统概览",
       "pairs": [
         {
-          "en": "Agent System Overview # \n In a LLM-powered autonomous agent system, LLM functions as the agent&rsquo;s brain, complemented by several key components:",
+          "en": "Building agents with LLM (large language model) as its core controller is a cool concept. Several proof-of-concepts demos, such as AutoGPT , GPT-Engineer and BabyAGI , serve as inspiring examples. The potentiality of LLM extends beyond generating well-written copies, stories, essays and programs; it can be framed as a powerful general problem solver.",
           "zh": "在一个 LLM 驱动的自主 Agent 系统中，LLM（大语言模型）充当 Agent 的「大脑」，由三个核心组件支撑："
         },
         {
-          "en": "Subgoal and decomposition: The agent breaks down large tasks into smaller, manageable subgoals, enabling efficient handling of complex tasks. \n Reflection and refinement: The agent can do self-criticism and self-reflection over past actions, learn from mistakes and refine them for future steps, thereby improving the quality of final results.",
+          "en": "[1] Wei et al. &ldquo;Chain of thought prompting elicits reasoning in large language models.&rdquo; NeurIPS 2022 \n [2] Yao et al. &ldquo;Tree of Thoughts: Dliberate Problem Solving with Large Language Models.&rdquo; arXiv preprint arXiv:2305.10601 (2023). \n [3] Liu et al. &ldquo;Chain of Hindsight Aligns Language Models with Feedback\n&ldquo; arXiv preprint arXiv:2302.02676 (2023). \n [4] Liu et al. &ldquo;LLM+P: Empowering Large Language Models with Optimal Planning Proficiency&rdquo; arXiv preprint arXiv:2304.11477 (2023). \n [5] Yao et al. &ldquo;ReAct: Synergizing reasoning and acting in language models.&rdquo; ICLR 2023. \n [6] Google Blog. &ldquo;Announcing ScaNN: Efficient Vector Similari",
           "zh": "- <strong>规划</strong>：将大型任务分解为子目标，并通过反思（reflection）与精炼（refinement）从错误中学习。<br>- <strong>记忆</strong>：短期记忆（上下文学习，in-context learning）与长期记忆（外部向量存储，支持持久化回忆）。<br>- <strong>工具使用</strong>：调用外部 API 获取模型权重中不具备的额外信息或能力。"
         },
         {
-          "en": "Short-term memory: I would consider all the in-context learning (See Prompt Engineering ) as utilizing short-term memory of the model to learn. \n Long-term memory: This provides the agent with the capability to retain and recall (infinite) information over extended periods, often by leveraging an external vector store and fast retrieval.",
+          "en": "",
           "zh": "---"
-        },
-        {
-          "en": "The agent learns to call external APIs for extra information that is missing from the model weights (often hard to change after pre-training), including current information, code execution capability, access to proprietary information sources and more.",
-          "zh": ""
-        },
-        {
-          "en": "Overview of a LLM-powered autonomous agent system.",
-          "zh": ""
-        },
-        {
-          "en": "Component One: Planning # \n A complicated task usually involves many steps. An agent needs to know what they are and plan ahead.",
-          "zh": ""
         }
       ]
     },
@@ -37,55 +25,55 @@
       "title": "组件一：规划",
       "pairs": [
         {
-          "en": "Task Decomposition # \n Chain of thought (CoT; Wei et al. 2022 ) has become a standard prompting technique for enhancing model performance on complex tasks. The model is instructed to &ldquo;think step by step&rdquo; to utilize more test-time computation to decompose hard tasks into smaller and simpler steps. CoT transforms big tasks into multiple manageable tasks and shed lights into an interpretation of the model&rsquo;s thinking process. \n Tree of Thoughts ( Yao et al. 2023 ) extends CoT by exploring multiple reasoning possibilities at each step. It first decomposes the problem into multiple",
+          "en": "",
           "zh": "<strong class=\"subhead\">任务分解</strong>"
         },
         {
-          "en": "Examples of reasoning trajectories for knowledge-intensive tasks (e.g. HotpotQA, FEVER) and decision-making tasks (e.g. AlfWorld Env, WebShop). (Image source: Yao et al. 2023 ).",
+          "en": "Chain of thought (CoT; Wei et al. 2022 ) has become a standard prompting technique for enhancing model performance on complex tasks. The model is instructed to &ldquo;think step by step&rdquo; to utilize more test-time computation to decompose hard tasks into smaller and simpler steps. CoT transforms big tasks into multiple manageable tasks and shed lights into an interpretation of the model&rsquo;s thinking process. \n Tree of Thoughts ( Yao et al. 2023 ) extends CoT by exploring multiple reasoning possibilities at each step. It first decomposes the problem into multiple thought steps and generates multiple thoughts per step, creating a tree structure. The search process can be BFS (breadth-",
           "zh": "<strong>思维链（Chain of Thought, CoT）</strong> 指示模型「逐步思考」，通过增加测试时的计算量将困难任务拆解为简单步骤。同时，CoT 也揭示了模型的推理过程。"
         },
         {
-          "en": "In both experiments on knowledge-intensive tasks and decision-making tasks, ReAct works better than the Act -only baseline where Thought: … step is removed. \n Reflexion ( Shinn &amp; Labash 2023 ) is a framework to equip agents with dynamic memory and self-reflection capabilities to improve reasoning skills. Reflexion has a standard RL setup, in which the reward model provides a simple binary reward and the action space follows the setup in ReAct where the task-specific action space is augmented with language to enable complex reasoning steps. After each action $a_t$, the agent computes a heur",
+          "en": "You should only respond in JSON format as described below\nResponse Format:\n{\n &#34;thoughts&#34;: {\n &#34;text&#34;: &#34;thought&#34;,\n &#34;reasoning&#34;: &#34;reasoning&#34;,\n &#34;plan&#34;: &#34;- short bulleted\\n- list that conveys\\n- long-term plan&#34;,\n &#34;criticism&#34;: &#34;constructive self-criticism&#34;,\n &#34;speak&#34;: &#34;thoughts summary to say to user&#34;\n },\n &#34;command&#34;: {\n &#34;name&#34;: &#34;command name&#34;,\n &#34;args&#34;: {\n &#34;arg name&#34;: &#34;value&#34;\n }\n }\n}\nEnsure the response can be parsed by Python json.loads\n GPT-Engineer is another project to create a whole repository of code given a task specified in natural language. The GPT-Engineer",
           "zh": "<strong>思维树（Tree of Thoughts, ToT）</strong> 扩展了 CoT，在每一步探索多个推理分支，形成树结构。搜索可采用 BFS（广度优先搜索）或 DFS（深度优先搜索），每个状态由一个分类器或多数投票评估。"
         },
         {
-          "en": "Illustration of the Reflexion framework. (Image source: Shinn & Labash, 2023 )",
+          "en": "One interesting observation is that while the LLM-based evaluation concluded that GPT-4 and ChemCrow perform nearly equivalently, human evaluations with experts oriented towards the completion and chemical correctness of the solutions showed that ChemCrow outperforms GPT-4 by a large margin. This indicates a potential problem with using LLM to evaluate its own performance on domains that requires deep expertise. The lack of expertise may cause LLMs not knowing its flaws and thus cannot well judge the correctness of task results. \n Boiko et al. (2023) also looked into LLM-empowered agents for scientific discovery, to handle autonomous design, planning, and performance of complex scientific ex",
           "zh": "任务分解可通过 LLM prompt（如 <code>\"Steps for XYZ.\\n1.\"</code>）、任务特定指令（如 <code>\"Write a story outline.\"</code>）或人工输入来实现。"
         },
         {
-          "en": "The heuristic function determines when the trajectory is inefficient or contains hallucination and should be stopped. Inefficient planning refers to trajectories that take too long without success. Hallucination is defined as encountering a sequence of consecutive identical actions that lead to the same observation in the environment. \n Self-reflection is created by showing two-shot examples to LLM and each example is a pair of (failed trajectory, ideal reflection for guiding future changes in the plan). Then reflections are added into the agent&rsquo;s working memory, up to three, to be used ",
+          "en": "MRKL ( Karpas et al. 2022 ), short for &ldquo;Modular Reasoning, Knowledge and Language&rdquo;, is a neuro-symbolic architecture for autonomous agents. A MRKL system is proposed to contain a collection of &ldquo;expert&rdquo; modules and the general-purpose LLM works as a router to route inquiries to the best suitable expert module. These modules can be neural (e.g. deep learning models) or symbolic (e.g. math calculator, currency converter, weather API). \n They did an experiment on fine-tuning LLM to call a calculator, using arithmetic as a test case. Their experiments showed that it was harder to solve verbal math problems than explicitly stated math problems because LLMs (7B Jurassic1-lar",
           "zh": "<strong>LLM+P</strong> 使用外部经典规划器，以 PDDL（Planning Domain Definition Language，规划域定义语言）作为中间接口。LLM 将问题翻译为「Problem PDDL」，规划器生成规划方案，LLM 再将结果翻译回自然语言 — 本质上将规划外包给外部工具。"
         },
         {
-          "en": "Experiments on AlfWorld Env and HotpotQA. Hallucination is a more common failure than inefficient planning in AlfWorld. (Image source: Shinn & Labash, 2023 )",
+          "en": "",
           "zh": "<strong class=\"subhead\">自我反思</strong>"
         },
         {
-          "en": "Chain of Hindsight (CoH; Liu et al. 2023 ) encourages the model to improve on its own outputs by explicitly presenting it with a sequence of past outputs, each annotated with feedback. Human feedback data is a collection of $D_h = \\{(x, y_i , r_i , z_i)\\}_{i=1}^n$, where $x$ is the prompt, each $y_i$ is a model completion, $r_i$ is the human rating of $y_i$, and $z_i$ is the corresponding human-provided hindsight feedback. Assume the feedback tuples are ranked by reward, $r_n \\geq r_{n-1} \\geq \\dots \\geq r_1$ The process is supervised fine-tuning where the data is a sequence in the form of $\\t",
+          "en": "The LLM is provided with a list of tool names, descriptions of their utility, and details about the expected input/output. \n It is then instructed to answer a user-given prompt using the tools provided when necessary. The instruction suggests the model to follow the ReAct format - Thought, Action, Action Input, Observation .",
           "zh": "<strong>ReAct</strong> 通过在动作空间中整合推理与行动，将任务特定的离散动作与自然语言统一。其 prompt 模板遵循以下循环："
         },
         {
-          "en": "After fine-tuning with CoH, the model can follow instructions to produce outputs with incremental improvement in a sequence. (Image source: Liu et al. 2023 )",
+          "en": "The agent learns to call external APIs for extra information that is missing from the model weights (often hard to change after pre-training), including current information, code execution capability, access to proprietary information sources and more.",
           "zh": "<pre><code><br>Thought: ...<br>Action: ...<br>Observation: ...<br>...（多次重复）<br></code></pre>"
         },
         {
-          "en": "The idea of CoH is to present a history of sequentially improved outputs in context and train the model to take on the trend to produce better outputs. Algorithm Distillation (AD; Laskin et al. 2023 ) applies the same idea to cross-episode trajectories in reinforcement learning tasks, where an algorithm is encapsulated in a long history-conditioned policy. Considering that an agent interacts with the environment many times and in each episode the agent gets a little better, AD concatenates this learning history and feeds that into the model. Hence we should expect the next predicted action to ",
+          "en": "In both experiments on knowledge-intensive tasks and decision-making tasks, ReAct works better than the Act -only baseline where Thought: … step is removed. \n Reflexion ( Shinn &amp; Labash 2023 ) is a framework to equip agents with dynamic memory and self-reflection capabilities to improve reasoning skills. Reflexion has a standard RL setup, in which the reward model provides a simple binary reward and the action space follows the setup in ReAct where the task-specific action space is augmented with language to enable complex reasoning steps. After each action $a_t$, the agent computes a heuristic $h_t$ and optionally may decide to reset the environment to start a new trial depending on the",
           "zh": "实验中，ReAct 的表现显著优于仅包含 Action 的基线模型（无 Thought 步骤）。"
         },
         {
-          "en": "Illustration of how Algorithm Distillation (AD) works. (Image source: Laskin et al. 2023 ).",
+          "en": "The heuristic function determines when the trajectory is inefficient or contains hallucination and should be stopped. Inefficient planning refers to trajectories that take too long without success. Hallucination is defined as encountering a sequence of consecutive identical actions that lead to the same observation in the environment. \n Self-reflection is created by showing two-shot examples to LLM and each example is a pair of (failed trajectory, ideal reflection for guiding future changes in the plan). Then reflections are added into the agent&rsquo;s working memory, up to three, to be used as context for querying LLM.",
           "zh": "<strong>Reflexion</strong> 赋予 Agent 动态记忆和自我反思能力以增强推理。采用标准强化学习（RL）设置，使用二元奖励和 ReAct 式动作。每次动作后，Agent 计算一个启发式评估，可依据自我反思重置环境开始新一轮尝试。启发式用于识别低效轨迹或幻觉行为（同样的观察却重复相同动作）。自我反思使用两个（失败轨迹、理想反思）的 few-shot 示例，存入工作记忆（最多三条）。"
         },
         {
-          "en": "The paper hypothesizes that any algorithm that generates a set of learning histories can be distilled into a neural network by performing behavioral cloning over actions. The history data is generated by a set of source policies, each trained for a specific task. At the training stage, during each RL run, a random task is sampled and a subsequence of multi-episode history is used for training, such that the learned policy is task-agnostic. \n In reality, the model has limited context window length, so episodes should be short enough to construct multi-episode history. Multi-episodic contexts of",
+          "en": "Chain of Hindsight (CoH; Liu et al. 2023 ) encourages the model to improve on its own outputs by explicitly presenting it with a sequence of past outputs, each annotated with feedback. Human feedback data is a collection of $D_h = \\{(x, y_i , r_i , z_i)\\}_{i=1}^n$, where $x$ is the prompt, each $y_i$ is a model completion, $r_i$ is the human rating of $y_i$, and $z_i$ is the corresponding human-provided hindsight feedback. Assume the feedback tuples are ranked by reward, $r_n \\geq r_{n-1} \\geq \\dots \\geq r_1$ The process is supervised fine-tuning where the data is a sequence in the form of $\\tau_h = (x, z_i, y_i, z_j, y_j, \\dots, z_n, y_n)$, where $\\leq i \\leq j \\leq n$. The model is finetun",
           "zh": "<strong>后见之明链（Chain of Hindsight, CoH）</strong> 将模型输出序列与人类反馈标注一同呈现给模型，训练其产出逐步改进的结果。训练数据结合了 WebGPT 比较、基于人类反馈的摘要生成和人类偏好数据集。训练中加入正则化项防止过拟合，并随机遮罩 0–5% 的历史 token 以防止走捷径。"
         },
         {
-          "en": "Comparison of AD, ED, source policy and RL^2 on environments that require memory and exploration. Only binary reward is assigned. The source policies are trained with A3C for \"dark\" environments and DQN for watermaze. (Image source: Laskin et al. 2023 )",
+          "en": "The idea of CoH is to present a history of sequentially improved outputs in context and train the model to take on the trend to produce better outputs. Algorithm Distillation (AD; Laskin et al. 2023 ) applies the same idea to cross-episode trajectories in reinforcement learning tasks, where an algorithm is encapsulated in a long history-conditioned policy. Considering that an agent interacts with the environment many times and in each episode the agent gets a little better, AD concatenates this learning history and feeds that into the model. Hence we should expect the next predicted action to lead to better performance than previous trials. The goal is to learn the process of RL instead of t",
           "zh": "<strong>算法蒸馏（Algorithm Distillation, AD）</strong> 将类似思想应用于跨 episode 的 RL 轨迹。模型从串联的多 episode 历史中学习，本质上学习的是 RL 的*过程*而非特定任务的策略。实现近最优的上下文 RL 需要 2–4 个 episode 的多轮上下文。尽管仅使用离线 RL，AD 的性能仍接近 RL²。"
         },
         {
-          "en": "Component Two: Memory # \n (Big thank you to ChatGPT for helping me draft this section. I&rsquo;ve learned a lot about the human brain and data structure for fast MIPS in my conversations with ChatGPT.)",
+          "en": "",
           "zh": "---"
         }
       ]
@@ -95,11 +83,11 @@
       "title": "组件二：记忆",
       "pairs": [
         {
-          "en": "Types of Memory # \n Memory can be defined as the processes used to acquire, store, retain, and later retrieve information. There are several types of memory in human brains.",
+          "en": "",
           "zh": "<strong class=\"subhead\">记忆类型</strong>"
         },
         {
-          "en": "Sensory Memory : This is the earliest stage of memory, providing the ability to retain impressions of sensory information (visual, auditory, etc) after the original stimuli have ended. Sensory memory typically only lasts for up to a few seconds. Subcategories include iconic memory (visual), echoic memory (auditory), and haptic memory (touch).",
+          "en": "",
           "zh": "人类记忆可分为："
         },
         {
@@ -107,100 +95,24 @@
           "zh": "1. <strong>感觉记忆（Sensory Memory）</strong>：保留感官输入的印象数秒（图像、听觉、触觉）。<br>2. <strong>短期记忆（Short-Term Memory, STM）/ 工作记忆（Working Memory）</strong>：持有约 7 项内容，持续 20–30 秒，用于认知任务。<br>3. <strong>长期记忆（Long-Term Memory, LTM）</strong>：存储天数到数十年的信息，容量近乎无限。<br>- *外显/陈述性记忆*：情景记忆（事件）与语义记忆（事实）<br>- *内隐/程序性记忆*：无意识的技能与习惯"
         },
         {
-          "en": "Long-Term Memory (LTM): Long-term memory can store information for a remarkably long time, ranging from a few days to decades, with an essentially unlimited storage capacity. There are two subtypes of LTM:",
+          "en": "Sensory memory as learning embedding representations for raw inputs, including text, image or other modalities; \n Short-term memory as in-context learning. It is short and finite, as it is restricted by the finite context window length of Transformer. \n Long-term memory as the external vector store that the agent can attend to at query time, accessible via fast retrieval.",
           "zh": "对应到 Agent 系统：<br>- 感觉记忆 ≈ 原始输入的 embedding 表示<br>- 短期记忆 ≈ 上下文学习（受限于 context window 大小）<br>- 长期记忆 ≈ 外部向量存储 + 快速检索"
         },
         {
-          "en": "Explicit / declarative memory: This is memory of facts and events, and refers to those memories that can be consciously recalled, including episodic memory (events and experiences) and semantic memory (facts and concepts). \n Implicit / procedural memory: This type of memory is unconscious and involves skills and routines that are performed automatically, like riding a bike or typing on a keyboard.",
+          "en": "Component Two: Memory # \n (Big thank you to ChatGPT for helping me draft this section. I&rsquo;ve learned a lot about the human brain and data structure for fast MIPS in my conversations with ChatGPT.)",
           "zh": "<strong class=\"subhead\">最大内积搜索（MIPS）</strong>"
         },
         {
-          "en": "Categorization of human memory.",
+          "en": "The external memory can alleviate the restriction of finite attention span. A standard practice is to save the embedding representation of information into a vector store database that can support fast maximum inner-product search ( MIPS ). To optimize the retrieval speed, the common choice is the approximate nearest neighbors (ANN)​ algorithm to return approximately top k nearest neighbors to trade off a little accuracy lost for a huge speedup. \n A couple common choices of ANN algorithms for fast MIPS:",
           "zh": "外部记忆使用支持快速 MIPS 的向量数据库，通常通过近似最近邻（ANN）算法实现："
         },
         {
-          "en": "We can roughly consider the following mappings:",
+          "en": "LSH (Locality-Sensitive Hashing): It introduces a hashing function such that similar input items are mapped to the same buckets with high probability, where the number of buckets is much smaller than the number of inputs. \n ANNOY (Approximate Nearest Neighbors Oh Yeah): The core data structure are random projection trees , a set of binary trees where each non-leaf node represents a hyperplane splitting the input space into half and each leaf stores one data point. Trees are built independently and at random, so to some extent, it mimics a hashing function. ANNOY search happens in all the trees to iteratively search through the half that is closest to the query and then aggregates the results",
           "zh": "- <strong>LSH</strong>（Locality-Sensitive Hashing，局部敏感哈希）：通过哈希将相似输入映射到同一桶。<br>- <strong>ANNOY</strong>（Approximate Nearest Neighbors Oh Yeah）：使用随机投影树。每棵树用超平面切分输入空间；搜索在所有树中遍历最近半区并聚合结果。<br>- <strong>HNSW</strong>（Hierarchical Navigable Small World，分层可导航小世界）：构建分层小世界图，在层间创建搜索捷径。搜索从顶层开始向下导航。<br>- <strong>FAISS</strong>（Facebook AI Similarity Search，Facebook AI 相似性搜索）：假设距离服从高斯分布，应用向量量化进行粗聚类后再细聚类。<br>- <strong>ScaNN</strong>（Scalable Nearest Neighbors，可扩展最近邻）：使用各向异性向量量化来保持内积相似性。"
         },
         {
-          "en": "Sensory memory as learning embedding representations for raw inputs, including text, image or other modalities; \n Short-term memory as in-context learning. It is short and finite, as it is restricted by the finite context window length of Transformer. \n Long-term memory as the external vector store that the agent can attend to at query time, accessible via fast retrieval.",
+          "en": "",
           "zh": "---"
-        },
-        {
-          "en": "Maximum Inner Product Search (MIPS) # \n The external memory can alleviate the restriction of finite attention span. A standard practice is to save the embedding representation of information into a vector store database that can support fast maximum inner-product search ( MIPS ). To optimize the retrieval speed, the common choice is the approximate nearest neighbors (ANN)​ algorithm to return approximately top k nearest neighbors to trade off a little accuracy lost for a huge speedup. \n A couple common choices of ANN algorithms for fast MIPS:",
-          "zh": ""
-        },
-        {
-          "en": "LSH (Locality-Sensitive Hashing): It introduces a hashing function such that similar input items are mapped to the same buckets with high probability, where the number of buckets is much smaller than the number of inputs. \n ANNOY (Approximate Nearest Neighbors Oh Yeah): The core data structure are random projection trees , a set of binary trees where each non-leaf node represents a hyperplane splitting the input space into half and each leaf stores one data point. Trees are built independently and at random, so to some extent, it mimics a hashing function. ANNOY search happens in all the trees",
-          "zh": ""
-        },
-        {
-          "en": "Comparison of MIPS algorithms, measured in recall@10. (Image source: Google Blog, 2020 )",
-          "zh": ""
-        },
-        {
-          "en": "Check more MIPS algorithms and performance comparison in ann-benchmarks.com . \n Component Three: Tool Use # \n Tool use is a remarkable and distinguishing characteristic of human beings. We create, modify and utilize external objects to do things that go beyond our physical and cognitive limits. Equipping LLMs with external tools can significantly extend the model capabilities.",
-          "zh": ""
-        },
-        {
-          "en": "A picture of a sea otter using rock to crack open a seashell, while floating in the water. While some other animals can use tools, the complexity is not comparable with humans. (Image source: Animals using tools )",
-          "zh": ""
-        },
-        {
-          "en": "MRKL ( Karpas et al. 2022 ), short for &ldquo;Modular Reasoning, Knowledge and Language&rdquo;, is a neuro-symbolic architecture for autonomous agents. A MRKL system is proposed to contain a collection of &ldquo;expert&rdquo; modules and the general-purpose LLM works as a router to route inquiries to the best suitable expert module. These modules can be neural (e.g. deep learning models) or symbolic (e.g. math calculator, currency converter, weather API). \n They did an experiment on fine-tuning LLM to call a calculator, using arithmetic as a test case. Their experiments showed that it was hard",
-          "zh": ""
-        },
-        {
-          "en": "Illustration of how HuggingGPT works. (Image source: Shen et al. 2023 )",
-          "zh": ""
-        },
-        {
-          "en": "The system comprises of 4 stages: \n (1) Task planning : LLM works as the brain and parses the user requests into multiple tasks. There are four attributes associated with each task: task type, ID, dependencies, and arguments. They use few-shot examples to guide LLM to do task parsing and planning. \n Instruction:",
-          "zh": ""
-        },
-        {
-          "en": "The AI assistant can parse user input to several tasks: [{\"task\": task, \"id\", task_id, \"dep\": dependency_task_ids, \"args\": {\"text\": text, \"image\": URL, \"audio\": URL, \"video\": URL}}]. The \"dep\" field denotes the id of the previous task which generates a new resource that the current task relies on. A special tag \" -task_id\" refers to the generated text image, audio and video in the dependency task with id as task_id. The task MUST be selected from the following options: {{ Available Task List }}. There is a logical relationship between tasks, please note their order. If the user input can't be ",
-          "zh": ""
-        },
-        {
-          "en": "(2) Model selection : LLM distributes the tasks to expert models, where the request is framed as a multiple-choice question. LLM is presented with a list of models to choose from. Due to the limited context length, task type based filtration is needed. \n Instruction:",
-          "zh": ""
-        },
-        {
-          "en": "Given the user request and the call command, the AI assistant helps the user to select a suitable model from a list of models to process the user request. The AI assistant merely outputs the model id of the most appropriate model. The output must be in a strict JSON format: \"id\": \"id\", \"reason\": \"your detail reason for the choice\". We have a list of models for you to choose from {{ Candidate Models }}. Please select one model from the list.",
-          "zh": ""
-        },
-        {
-          "en": "(3) Task execution : Expert models execute on the specific tasks and log results. \n Instruction:",
-          "zh": ""
-        },
-        {
-          "en": "With the input and the inference results, the AI assistant needs to describe the process and results. The previous stages can be formed as - User Input: {{ User Input }}, Task Planning: {{ Tasks }}, Model Selection: {{ Model Assignment }}, Task Execution: {{ Predictions }}. You must first answer the user's request in a straightforward manner. Then describe the task process and show your analysis and model inference results to the user in the first person. If inference results contain a file path, must tell the user the complete file path.",
-          "zh": ""
-        },
-        {
-          "en": "(4) Response generation : LLM receives the execution results and provides summarized results to users. \n To put HuggingGPT into real world usage, a couple challenges need to solve: (1) Efficiency improvement is needed as both LLM inference rounds and interactions with other models slow down the process; (2) It relies on a long context window to communicate over complicated task content; (3) Stability improvement of LLM outputs and external model services. \n API-Bank ( Li et al. 2023 ) is a benchmark for evaluating the performance of tool-augmented LLMs. It contains 53 commonly used API tools, ",
-          "zh": ""
-        },
-        {
-          "en": "Pseudo code of how LLM makes an API call in API-Bank. (Image source: Li et al. 2023 )",
-          "zh": ""
-        },
-        {
-          "en": "In the API-Bank workflow, LLMs need to make a couple of decisions and at each step we can evaluate how accurate that decision is. Decisions include:",
-          "zh": ""
-        },
-        {
-          "en": "Whether an API call is needed. \n Identify the right API to call: if not good enough, LLMs need to iteratively modify the API inputs (e.g. deciding search keywords for Search Engine API). \n Response based on the API results: the model can choose to refine and call again if results are not satisfied.",
-          "zh": ""
-        },
-        {
-          "en": "This benchmark evaluates the agent&rsquo;s tool use capabilities at three levels:",
-          "zh": ""
-        },
-        {
-          "en": "Level-1 evaluates the ability to call the API . Given an API&rsquo;s description, the model needs to determine whether to call a given API, call it correctly, and respond properly to API returns. \n Level-2 examines the ability to retrieve the API . The model needs to search for possible APIs that may solve the user&rsquo;s requirement and learn how to use them by reading documentation. \n Level-3 assesses the ability to plan API beyond retrieve and call . Given unclear user requests (e.g. schedule group meetings, book flight/hotel/restaurant for a trip), the model may have to conduct multiple A",
-          "zh": ""
         }
       ]
     },
@@ -209,56 +121,32 @@
       "title": "组件三：工具使用",
       "pairs": [
         {
-          "en": "Task Decomposition # \n Chain of thought (CoT; Wei et al. 2022 ) has become a standard prompting technique for enhancing model performance on complex tasks. The model is instructed to &ldquo;think step by step&rdquo; to utilize more test-time computation to decompose hard tasks into smaller and simpler steps. CoT transforms big tasks into multiple manageable tasks and shed lights into an interpretation of the model&rsquo;s thinking process. \n Tree of Thoughts ( Yao et al. 2023 ) extends CoT by exploring multiple reasoning possibilities at each step. It first decomposes the problem into multiple",
+          "en": "Scientific Discovery Agent # \n ChemCrow ( Bran et al. 2023 ) is a domain-specific example in which LLM is augmented with 13 expert-designed tools to accomplish tasks across organic synthesis, drug discovery, and materials design. The workflow, implemented in LangChain , reflects what was previously described in the ReAct and MRKLs and combines CoT reasoning with tools relevant to the tasks:",
           "zh": "<strong>MRKL</strong>（Modular Reasoning, Knowledge and Language，模块化推理、知识与语言）是一种神经-符号架构，通用 LLM 将查询路由给专家模块（可以是神经网络或符号模块，如计算器、天气 API）。实验表明，LLM 在提取基础算术的参数方面存在困难，凸显了知道*何时以及如何使用工具*的关键性。"
         },
         {
-          "en": "Examples of reasoning trajectories for knowledge-intensive tasks (e.g. HotpotQA, FEVER) and decision-making tasks (e.g. AlfWorld Env, WebShop). (Image source: Yao et al. 2023 ).",
+          "en": "(4) Response generation : LLM receives the execution results and provides summarized results to users. \n To put HuggingGPT into real world usage, a couple challenges need to solve: (1) Efficiency improvement is needed as both LLM inference rounds and interactions with other models slow down the process; (2) It relies on a long context window to communicate over complicated task content; (3) Stability improvement of LLM outputs and external model services. \n API-Bank ( Li et al. 2023 ) is a benchmark for evaluating the performance of tool-augmented LLMs. It contains 53 commonly used API tools, a complete tool-augmented LLM workflow, and 264 annotated dialogues that involve 568 API calls. The ",
           "zh": "<strong>TALM</strong> 和 <strong>Toolformer</strong> 对 LM 进行微调以使用外部工具 API，根据 API 调用标注是否提升了输出质量来扩展训练数据集。"
         },
         {
-          "en": "In both experiments on knowledge-intensive tasks and decision-making tasks, ReAct works better than the Act -only baseline where Thought: … step is removed. \n Reflexion ( Shinn &amp; Labash 2023 ) is a framework to equip agents with dynamic memory and self-reflection capabilities to improve reasoning skills. Reflexion has a standard RL setup, in which the reward model provides a simple binary reward and the action space follows the setup in ReAct where the task-specific action space is augmented with language to enable complex reasoning steps. After each action $a_t$, the agent computes a heur",
+          "en": "In a LLM-powered autonomous agent system, LLM functions as the agent&rsquo;s brain, complemented by several key components:",
           "zh": "ChatGPT 插件和 OpenAI API function calling 是工具增强 LLM 的实践案例。"
         },
         {
-          "en": "Illustration of the Reflexion framework. (Image source: Shinn & Labash, 2023 )",
+          "en": "Overview of a LLM-powered autonomous agent system.",
           "zh": "<strong>HuggingGPT</strong> 使用 ChatGPT 作为任务规划器来选择 HuggingFace 模型。其工作分四个阶段：<br>1. <strong>任务规划</strong>：LLM 解析用户请求为多个带类型、ID、依赖关系和参数的任务。<br>2. <strong>模型选择</strong>：LLM 将模型选择转化为多项选择题。<br>3. <strong>任务执行</strong>：专家模型执行具体任务并记录结果。<br>4. <strong>响应生成</strong>：LLM 汇总执行结果返回给用户。"
         },
         {
-          "en": "The heuristic function determines when the trajectory is inefficient or contains hallucination and should be stopped. Inefficient planning refers to trajectories that take too long without success. Hallucination is defined as encountering a sequence of consecutive identical actions that lead to the same observation in the environment. \n Self-reflection is created by showing two-shot examples to LLM and each example is a pair of (failed trajectory, ideal reflection for guiding future changes in the plan). Then reflections are added into the agent&rsquo;s working memory, up to three, to be used ",
+          "en": "Check more MIPS algorithms and performance comparison in ann-benchmarks.com . \n Component Three: Tool Use # \n Tool use is a remarkable and distinguishing characteristic of human beings. We create, modify and utilize external objects to do things that go beyond our physical and cognitive limits. Equipping LLMs with external tools can significantly extend the model capabilities.",
           "zh": "挑战包括效率、对长上下文窗口的依赖，以及 LLM 输出和外部服务的稳定性。"
         },
         {
-          "en": "Experiments on AlfWorld Env and HotpotQA. Hallucination is a more common failure than inefficient planning in AlfWorld. (Image source: Shinn & Labash, 2023 )",
+          "en": "Level-1 evaluates the ability to call the API . Given an API&rsquo;s description, the model needs to determine whether to call a given API, call it correctly, and respond properly to API returns. \n Level-2 examines the ability to retrieve the API . The model needs to search for possible APIs that may solve the user&rsquo;s requirement and learn how to use them by reading documentation. \n Level-3 assesses the ability to plan API beyond retrieve and call . Given unclear user requests (e.g. schedule group meetings, book flight/hotel/restaurant for a trip), the model may have to conduct multiple API calls to solve it.",
           "zh": "<strong>API-Bank</strong> 是一个基准测试，包含 53 个 API 工具、完整的工具增强 LLM 工作流和 264 条标注对话（568 次 API 调用）。它从三个层级评估：<br>- <strong>Level 1</strong>：给定 API 描述，正确调用 API。<br>- <strong>Level 2</strong>：通过搜索引擎检索正确的 API，并通过文档学习使用方法。<br>- <strong>Level 3</strong>：针对模糊的用户请求规划多次 API 调用。"
         },
         {
-          "en": "Chain of Hindsight (CoH; Liu et al. 2023 ) encourages the model to improve on its own outputs by explicitly presenting it with a sequence of past outputs, each annotated with feedback. Human feedback data is a collection of $D_h = \\{(x, y_i , r_i , z_i)\\}_{i=1}^n$, where $x$ is the prompt, each $y_i$ is a model completion, $r_i$ is the human rating of $y_i$, and $z_i$ is the corresponding human-provided hindsight feedback. Assume the feedback tuples are ranked by reward, $r_n \\geq r_{n-1} \\geq \\dots \\geq r_1$ The process is supervised fine-tuning where the data is a sequence in the form of $\\t",
+          "en": "",
           "zh": "---"
-        },
-        {
-          "en": "After fine-tuning with CoH, the model can follow instructions to produce outputs with incremental improvement in a sequence. (Image source: Liu et al. 2023 )",
-          "zh": ""
-        },
-        {
-          "en": "The idea of CoH is to present a history of sequentially improved outputs in context and train the model to take on the trend to produce better outputs. Algorithm Distillation (AD; Laskin et al. 2023 ) applies the same idea to cross-episode trajectories in reinforcement learning tasks, where an algorithm is encapsulated in a long history-conditioned policy. Considering that an agent interacts with the environment many times and in each episode the agent gets a little better, AD concatenates this learning history and feeds that into the model. Hence we should expect the next predicted action to ",
-          "zh": ""
-        },
-        {
-          "en": "Illustration of how Algorithm Distillation (AD) works. (Image source: Laskin et al. 2023 ).",
-          "zh": ""
-        },
-        {
-          "en": "The paper hypothesizes that any algorithm that generates a set of learning histories can be distilled into a neural network by performing behavioral cloning over actions. The history data is generated by a set of source policies, each trained for a specific task. At the training stage, during each RL run, a random task is sampled and a subsequence of multi-episode history is used for training, such that the learned policy is task-agnostic. \n In reality, the model has limited context window length, so episodes should be short enough to construct multi-episode history. Multi-episodic contexts of",
-          "zh": ""
-        },
-        {
-          "en": "Comparison of AD, ED, source policy and RL^2 on environments that require memory and exploration. Only binary reward is assigned. The source policies are trained with A3C for \"dark\" environments and DQN for watermaze. (Image source: Laskin et al. 2023 )",
-          "zh": ""
-        },
-        {
-          "en": "Component Two: Memory # \n (Big thank you to ChatGPT for helping me draft this section. I&rsquo;ve learned a lot about the human brain and data structure for fast MIPS in my conversations with ChatGPT.)",
-          "zh": ""
         }
       ]
     },
@@ -267,100 +155,48 @@
       "title": "案例研究",
       "pairs": [
         {
-          "en": "Scientific Discovery Agent # \n ChemCrow ( Bran et al. 2023 ) is a domain-specific example in which LLM is augmented with 13 expert-designed tools to accomplish tasks across organic synthesis, drug discovery, and materials design. The workflow, implemented in LangChain , reflects what was previously described in the ReAct and MRKLs and combines CoT reasoning with tools relevant to the tasks:",
+          "en": "Subgoal and decomposition: The agent breaks down large tasks into smaller, manageable subgoals, enabling efficient handling of complex tasks. \n Reflection and refinement: The agent can do self-criticism and self-reflection over past actions, learn from mistakes and refine them for future steps, thereby improving the quality of final results.",
           "zh": "<strong class=\"subhead\">科学发现 Agent</strong>"
         },
         {
-          "en": "The LLM is provided with a list of tool names, descriptions of their utility, and details about the expected input/output. \n It is then instructed to answer a user-given prompt using the tools provided when necessary. The instruction suggests the model to follow the ReAct format - Thought, Action, Action Input, Observation .",
+          "en": "This fun simulation results in emergent social behavior, such as information diffusion, relationship memory (e.g. two agents continuing the conversation topic) and coordination of social events (e.g. host a party and invite many others). \n Proof-of-Concept Examples # \n AutoGPT has drawn a lot of attention into the possibility of setting up autonomous agents with LLM as the main controller. It has quite a lot of reliability issues given the natural language interface, but nevertheless a cool proof-of-concept demo. A lot of code in AutoGPT is about format parsing. \n Here is the system message used by AutoGPT, where {{...}} are user inputs: \n You are {{ai-name}}, {{user-provided AI bot descript",
           "zh": "<strong>ChemCrow</strong> 使用 LangChain 和 ReAct 模式，为 LLM 增强 13 种化学工具（有机合成、药物发现、材料设计）。在化学正确性方面，人类专家评分远高于 GPT-4，而基于 LLM 的自动评估则认为两者不相上下 — 这揭示了在需要深度专业知识的领域使用 LLM 做评估的问题。"
         },
         {
-          "en": "One interesting observation is that while the LLM-based evaluation concluded that GPT-4 and ChemCrow perform nearly equivalently, human evaluations with experts oriented towards the completion and chemical correctness of the solutions showed that ChemCrow outperforms GPT-4 by a large margin. This indicates a potential problem with using LLM to evaluate its own performance on domains that requires deep expertise. The lack of expertise may cause LLMs not knowing its flaws and thus cannot well judge the correctness of task results. \n Boiko et al. (2023) also looked into LLM-empowered agents for s",
+          "en": "Short-term memory: I would consider all the in-context learning (See Prompt Engineering ) as utilizing short-term memory of the model to learn. \n Long-term memory: This provides the agent with the capability to retain and recall (infinite) information over extended periods, often by leveraging an external vector store and fast retrieval.",
           "zh": "<strong>Boiko et al. (2023)</strong> 构建了用于自主科学实验的 Agent，覆盖设计、规划和执行。当被要求开发一种新型抗癌药时，Agent 查询趋势、选择靶点、请求骨架结构并尝试合成。在安全测试中，11 个化学武器合成请求中有 4 个被接受。"
         },
         {
-          "en": "inquired about current trends in anticancer drug discovery; \n selected a target; \n requested a scaffold targeting these compounds; \n Once the compound was identified, the model attempted its synthesis.",
+          "en": "Component One: Planning # \n A complicated task usually involves many steps. An agent needs to know what they are and plan ahead.",
           "zh": "<strong class=\"subhead\">生成式 Agent 模拟</strong>"
         },
         {
-          "en": "They also discussed the risks, especially with illicit drugs and bioweapons. They developed a test set containing a list of known chemical weapon agents and asked the agent to synthesize them. 4 out of 11 requests (36%) were accepted to obtain a synthesis solution and the agent attempted to consult documentation to execute the procedure. 7 out of 11 were rejected and among these 7 rejected cases, 5 happened after a Web search while 2 were rejected based on prompt only.",
+          "en": "Generative Agents ( Park, et al. 2023 ) is super fun experiment where 25 virtual characters, each controlled by a LLM-powered agent, are living and interacting in a sandbox environment, inspired by The Sims. Generative agents create believable simulacra of human behavior for interactive applications. \n The design of generative agents combines LLM with memory, planning and reflection mechanisms to enable agents to behave conditioned on past experience, as well as to interact with other agents.",
           "zh": "<strong>Generative Agents</strong>（Park et al., 2023）在类似模拟人生的沙盒环境中设置了 25 个 LLM 驱动的虚拟角色。核心组件："
         },
         {
-          "en": "Generative Agents Simulation # \n Generative Agents ( Park, et al. 2023 ) is super fun experiment where 25 virtual characters, each controlled by a LLM-powered agent, are living and interacting in a sandbox environment, inspired by The Sims. Generative agents create believable simulacra of human behavior for interactive applications. \n The design of generative agents combines LLM with memory, planning and reflection mechanisms to enable agents to behave conditioned on past experience, as well as to interact with other agents.",
+          "en": "Memory stream: is a long-term memory module (external database) that records a comprehensive list of agents&rsquo; experience in natural language.",
           "zh": "- <strong>记忆流（Memory stream）</strong>：长期外部数据库，以自然语言记录观察。<br>- <strong>检索模型（Retrieval model）</strong>：基于相关性、时间衰减和重要性获取上下文。<br>- <strong>反思机制（Reflection mechanism）</strong>：随时间推移将记忆合成为更高层次的推断，通过将最近 100 条观察送入 LM 生成关键问题及答案。<br>- <strong>规划与反应（Planning & Reacting）</strong>：将反思和环境信息转化为行动，考虑角色关系和跨 Agent 观察。"
         },
         {
-          "en": "Memory stream: is a long-term memory module (external database) that records a comprehensive list of agents&rsquo; experience in natural language.",
+          "en": "",
           "zh": "模拟展现出涌现的社会行为，如信息扩散、关系记忆和事件协调。"
         },
         {
-          "en": "Each element is an observation , an event directly provided by the agent.\n- Inter-agent communication can trigger new natural language statements.",
+          "en": "",
           "zh": "<strong class=\"subhead\">概念验证项目</strong>"
         },
         {
-          "en": "Retrieval model: surfaces the context to inform the agent&rsquo;s behavior, according to relevance, recency and importance.",
+          "en": "Comparison of MIPS algorithms, measured in recall@10. (Image source: Google Blog, 2020 )",
           "zh": "<strong>AutoGPT</strong> 使用系统消息包含约束、命令（Google 搜索、文件操作、代码执行等）、资源和性能评估指令。模型以严格 JSON 格式输出思考和指令。"
         },
         {
-          "en": "Recency: recent events have higher scores \n Importance: distinguish mundane from core memories. Ask LM directly. \n Relevance: based on how related it is to the current situation / query.",
+          "en": "Conversatin samples: \n [\n {\n &#34;role&#34;: &#34;system&#34;,\n &#34;content&#34;: &#34;You will get instructions for code to write.\\nYou will write a very long answer. Make sure that every detail of the architecture is, in the end, implemented as code.\\nMake sure that every detail of the architecture is, in the end, implemented as code.\\n\\nThink step by step and reason yourself to the right decisions to make sure we get it right.\\nYou will first lay out the names of the core classes, functions, methods that will be necessary, as well as a quick comment on their purpose.\\n\\nThen you will output the content of each file including ALL code.\\nEach file must strictly follow a markdown code block",
           "zh": "<strong>GPT-Engineer</strong> 从自然语言任务描述生成完整代码仓库。首先通过对话澄清需求，然后切换到代码编写模式，系统消息强调逐步推理、以 markdown 代码块输出完整代码实现和最佳实践（Python 使用 pytest 和 dataclasses；包含 requirements.txt；Node.js 使用 package.json）。"
         },
         {
-          "en": "Reflection mechanism: synthesizes memories into higher level inferences over time and guides the agent&rsquo;s future behavior. They are higher-level summaries of past events (&lt;- note that this is a bit different from self-reflection above)",
+          "en": "",
           "zh": "---"
-        },
-        {
-          "en": "Prompt LM with 100 most recent observations and to generate 3 most salient high-level questions given a set of observations/statements. Then ask LM to answer those questions.",
-          "zh": ""
-        },
-        {
-          "en": "Planning &amp; Reacting : translate the reflections and the environment information into actions",
-          "zh": ""
-        },
-        {
-          "en": "Planning is essentially in order to optimize believability at the moment vs in time. \n Prompt template: {Intro of an agent X}. Here is X's plan today in broad strokes: 1) \n Relationships between agents and observations of one agent by another are all taken into consideration for planning and reacting. \n Environment information is present in a tree structure.",
-          "zh": ""
-        },
-        {
-          "en": "The generative agent architecture. (Image source: Park et al. 2023 )",
-          "zh": ""
-        },
-        {
-          "en": "This fun simulation results in emergent social behavior, such as information diffusion, relationship memory (e.g. two agents continuing the conversation topic) and coordination of social events (e.g. host a party and invite many others). \n Proof-of-Concept Examples # \n AutoGPT has drawn a lot of attention into the possibility of setting up autonomous agents with LLM as the main controller. It has quite a lot of reliability issues given the natural language interface, but nevertheless a cool proof-of-concept demo. A lot of code in AutoGPT is about format parsing. \n Here is the system message us",
-          "zh": ""
-        },
-        {
-          "en": "1. {{user-provided goal 1}}\n2. {{user-provided goal 2}}\n3. ...\n4. ...\n5. ...",
-          "zh": ""
-        },
-        {
-          "en": "Constraints:\n1. ~4000 word limit for short term memory. Your short term memory is short, so immediately save important information to files.\n2. If you are unsure how you previously did something or want to recall past events, thinking about similar events will help you remember.\n3. No user assistance\n4. Exclusively use the commands listed in double quotes e.g. &#34;command name&#34;\n5. Use subprocesses for commands that will not terminate within a few minutes",
-          "zh": ""
-        },
-        {
-          "en": "Commands:\n1. Google Search: &#34;google&#34;, args: &#34;input&#34;: &#34;&lt;search&gt;&#34;\n2. Browse Website: &#34;browse_website&#34;, args: &#34;url&#34;: &#34;&lt;url&gt;&#34;, &#34;question&#34;: &#34;&lt;what_you_want_to_find_on_website&gt;&#34;\n3. Start GPT Agent: &#34;start_agent&#34;, args: &#34;name&#34;: &#34;&lt;name&gt;&#34;, &#34;task&#34;: &#34;&lt;short_task_desc&gt;&#34;, &#34;prompt&#34;: &#34;&lt;prompt&gt;&#34;\n4. Message GPT Agent: &#34;message_agent&#34;, args: &#34;key&#34;: &#34;&lt;key&gt;&#34;, &#34;message&#34;: &#34;&lt;message&gt;&#34;\n5. List GPT Agents: &#34;li",
-          "zh": ""
-        },
-        {
-          "en": "Resources:\n1. Internet access for searches and information gathering.\n2. Long Term memory management.\n3. GPT-3.5 powered Agents for delegation of simple tasks.\n4. File output.",
-          "zh": ""
-        },
-        {
-          "en": "Performance Evaluation:\n1. Continuously review and analyze your actions to ensure you are performing to the best of your abilities.\n2. Constructively self-criticize your big-picture behavior constantly.\n3. Reflect on past decisions and strategies to refine your approach.\n4. Every command has a cost, so be smart and efficient. Aim to complete tasks in the least number of steps.",
-          "zh": ""
-        },
-        {
-          "en": "You should only respond in JSON format as described below\nResponse Format:\n{\n &#34;thoughts&#34;: {\n &#34;text&#34;: &#34;thought&#34;,\n &#34;reasoning&#34;: &#34;reasoning&#34;,\n &#34;plan&#34;: &#34;- short bulleted\\n- list that conveys\\n- long-term plan&#34;,\n &#34;criticism&#34;: &#34;constructive self-criticism&#34;,\n &#34;speak&#34;: &#34;thoughts summary to say to user&#34;\n },\n &#34;command&#34;: {\n &#34;name&#34;: &#34;command name&#34;,\n &#34;args&#34;: {\n &#34;arg name&#34;: &#34;value&#34;\n }\n }\n}\nEnsure the response can be parsed by Python json.loads\n GPT-Engineer is another proje",
-          "zh": ""
-        },
-        {
-          "en": "You will get instructions for code to write.\nYou will write a very long answer. Make sure that every detail of the architecture is, in the end, implemented as code.\nMake sure that every detail of the architecture is, in the end, implemented as code.\n Think step by step and reason yourself to the right decisions to make sure we get it right.\nYou will first lay out the names of the core classes, functions, methods that will be necessary, as well as a quick comment on their purpose. \n Then you will output the content of each file including ALL code.\nEach file must strictly follow a markdown code ",
-          "zh": ""
-        },
-        {
-          "en": "Conversatin samples: \n [\n {\n &#34;role&#34;: &#34;system&#34;,\n &#34;content&#34;: &#34;You will get instructions for code to write.\\nYou will write a very long answer. Make sure that every detail of the architecture is, in the end, implemented as code.\\nMake sure that every detail of the architecture is, in the end, implemented as code.\\n\\nThink step by step and reason yourself to the right decisions to make sure we get it right.\\nYou will first lay out the names of the core classes, functions, methods that will be necessary, as well as a quick comment on their purpose.\\n\\nThen you will outpu",
-          "zh": ""
         }
       ]
     },
@@ -369,19 +205,19 @@
       "title": "挑战",
       "pairs": [
         {
-          "en": "Challenges # \n After going through key ideas and demos of building LLM-centered agents, I start to see a couple common limitations:",
+          "en": "",
           "zh": "三个关键局限："
         },
         {
-          "en": "Finite context length : The restricted context capacity limits the inclusion of historical information, detailed instructions, API call context, and responses. The design of the system has to work with this limited communication bandwidth, while mechanisms like self-reflection to learn from past mistakes would benefit a lot from long or infinite context windows. Although vector stores and retrieval can provide access to a larger knowledge pool, their representation power is not as powerful as full attention.",
+          "en": "Pseudo code of how LLM makes an API call in API-Bank. (Image source: Li et al. 2023 )",
           "zh": "- <strong>有限的上下文长度</strong>：限制了历史信息、详细指令和 API 调用上下文的容量。自我反思能从更长的上下文窗口中大幅受益。向量存储虽然提供了访问途径，但其表征能力不如完整的注意力机制。"
         },
         {
-          "en": "Challenges in long-term planning and task decomposition : Planning over a lengthy history and effectively exploring the solution space remain challenging. LLMs struggle to adjust plans when faced with unexpected errors, making them less robust compared to humans who learn from trial and error.",
+          "en": "The system comprises of 4 stages: \n (1) Task planning : LLM works as the brain and parses the user requests into multiple tasks. There are four attributes associated with each task: task type, ID, dependencies, and arguments. They use few-shot examples to guide LLM to do task parsing and planning. \n Instruction:",
           "zh": "- <strong>长期规划与任务分解的困难</strong>：LLM 在遇到意外错误时难以调整计划，使其不如通过试错学习的人类鲁棒。"
         },
         {
-          "en": "Reliability of natural language interface : Current agent system relies on natural language as an interface between LLMs and external components such as memory and tools. However, the reliability of model outputs is questionable, as LLMs may make formatting errors and occasionally exhibit rebellious behavior (e.g. refuse to follow an instruction). Consequently, much of the agent demo code focuses on parsing model output.",
+          "en": "This benchmark evaluates the agent&rsquo;s tool use capabilities at three levels:",
           "zh": "- <strong>自然语言接口的可靠性</strong>：模型输出可能存在格式错误或表现出叛逆行为。大量 Agent 演示代码大量精力花在解析模型输出上。"
         },
         {
@@ -395,16 +231,8 @@
       "title": "引用",
       "pairs": [
         {
-          "en": "Citation # \n Cited as:",
-          "zh": "<em class=\"quote\">Weng, Lilian. (Jun 2023). \"LLM-powered Autonomous Agents\". Lil'Log. https://lilianweng.github.io/posts/2023-06-23-agent/.</em>"
-        },
-        {
           "en": "Weng, Lilian. (Jun 2023). &ldquo;LLM-powered Autonomous Agents&rdquo;. Lil&rsquo;Log. https://lilianweng.github.io/posts/2023-06-23-agent/.",
-          "zh": ""
-        },
-        {
-          "en": "Or \n @article{weng2023agent,\n title = &#34;LLM-powered Autonomous Agents&#34;,\n author = &#34;Weng, Lilian&#34;,\n journal = &#34;lilianweng.github.io&#34;,\n year = &#34;2023&#34;,\n month = &#34;Jun&#34;,\n url = &#34;https://lilianweng.github.io/posts/2023-06-23-agent/&#34;\n}",
-          "zh": ""
+          "zh": "<em class=\"quote\">Weng, Lilian. (Jun 2023). \"LLM-powered Autonomous Agents\". Lil'Log. https://lilianweng.github.io/posts/2023-06-23-agent/.</em>"
         }
       ]
     }
