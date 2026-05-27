@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>苦涩的教训 · The Bitter Lesson · Bilingual Reader</title>
+<style>
+:root{--bg:#fff;--text:#1a1a2e;--text2:#52525b;--accent:#4f46e5;--border:#e5e5e7;--hl:rgba(79,70,229,.06)}
+body.dark{--bg:#0f0f13;--text:#e4e4ec;--text2:#9898a8;--accent:#818cf8;--border:#2a2a35;--hl:rgba(129,140,248,.08)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{max-width:1040px;margin:0 auto;padding:40px 24px;font-family:-apple-system,'PingFang SC',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+.toolbar{display:flex;gap:8px;margin:0 0 12px;flex-wrap:wrap}
+.toolbar button,.toolbar a{padding:6px 16px;border:1px solid var(--border);border-radius:6px;background:var(--bg);color:var(--accent);cursor:pointer;font-size:.8rem;font-family:inherit;text-decoration:none;display:inline-block}
+.toolbar button:hover,.toolbar a:hover{background:var(--hl)}
+h1{font-size:1.5rem;margin-bottom:6px}
+.author{color:var(--text2);font-size:.875rem;margin-bottom:40px}
+.section{margin-bottom:40px}
+.section-title{text-align:center;font-weight:600;font-size:1rem;background:linear-gradient(135deg,#5e6ad2,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin:0 0 20px;padding-top:40px;border-top:1px solid var(--border)}
+.section:first-of-type .section-title{border-top:none;padding-top:0}
+.pair{display:flex;gap:24px;padding:8px 12px;margin:0 -12px;border-radius:6px;cursor:pointer;border-left:2px solid transparent;transition:background .15s,border-color .15s}
+.pair:hover{background:var(--hl)}
+.pair.active{background:var(--hl);border-left-color:var(--accent)}
+.pair+.pair{margin-top:6px;padding-top:8px;border-top:1px solid var(--border)}
+.col-en,.col-zh{flex:0 0 50%;min-width:0;line-height:1.65;color:var(--text2);font-size:16px}
+.pair.active .col-en,.pair.active .col-zh{color:var(--text)}
+.col-en strong,.col-zh strong{color:var(--text)}
+.col-en em,.col-zh em{font-style:italic}
+.col-en code,.col-zh code{font-size:.875em;background:var(--hl);padding:2px 6px;border-radius:3px;font-family:'SF Mono','Fira Code',monospace}
+.col-en pre,.col-zh pre{background:var(--hl);padding:12px 16px;border-radius:6px;overflow-x:auto;font-size:.8125rem;margin:8px 0}
+.col-en pre code,.col-zh pre code{background:none;padding:0}
+.col-en blockquote,.col-zh blockquote{border-left:2px solid var(--accent);padding-left:12px;margin:8px 0;opacity:.8}
+.col-en ul,.col-zh ul,.col-en ol,.col-zh ol{padding-left:20px;margin:6px 0}
+.col-en a,.col-zh a{color:var(--accent)}
+.col-en img,.col-zh img{max-width:100%}
+.col-en table,.col-zh table{border-collapse:collapse;width:100%;margin:8px 0}
+.col-en td,.col-zh td,.col-en th,.col-zh th{border:1px solid var(--border);padding:4px 8px;font-size:.875rem}
+.subhead{display:block;margin-top:12px;font-size:.9375rem}
+.quote{border-left:2px solid var(--accent);padding-left:12px;margin:6px 0;font-style:italic;display:block;opacity:.8}
+body.lang-zh .col-en{display:none}
+body.lang-zh .col-zh{flex:1 1 auto}
+body.lang-en .col-zh{display:none}
+body.lang-en .col-en{flex:1 1 auto}
+body.swapped .pair .col-en{order:1}
+body.swapped .pair .col-zh{order:2}
+@media(max-width:768px){body{padding:24px 16px}.pair{flex-direction:column;gap:4px}.col-zh{border-top:1px solid var(--border);padding-top:8px}.section-title{padding-top:32px}}
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  <button id="swapBtn">⇄ 英中互换</button>
+  <button id="darkBtn">🌙 关灯</button>
+  <button id="langBtn">📖 双语</button>
+  <a href="index.html">← 索引</a>
+</div>
+
+<h1>苦涩的教训 · The Bitter Lesson</h1>
+<p class="author">Rich Sutton · 2019年3月13日</p>
+
+<div id="content"></div>
+
+<script>
+// ====== Data ======
+var DATA = {"title": "苦涩的教训 · The Bitter Lesson", "author": "Rich Sutton · 2019年3月13日", "sections": [{"id": "part1", "title": "核心论点：算力碾压知识", "pairs": [{"en": "The biggest lesson that can be read from 70 years of AI research is that general methods that leverage computation are ultimately the most effective, and by a large margin.", "zh": "从 70 年 AI 研究中能读出的最大教训是：利用算力的通用方法最终是最有效的，而且优势巨大。"}, {"en": "The ultimate reason for this is Moore's law, or rather its generalization of continued exponentially falling cost per unit of computation.", "zh": "根本原因是摩尔定律——更准确地说，是它的泛化版本：单位算力成本持续呈指数下降。"}, {"en": "Most AI research has been conducted as if the computation available to the agent were constant (in which case leveraging human knowledge would be one of the only ways to improve performance) but, over a slightly longer time than a typical research project, massively more computation inevitably becomes available.", "zh": "大多数 AI 研究假设 Agent 可用的算力是恒定的——这种情况下，利用人类知识确实是提高性能的少数途径之一。但只需稍微拉长时间尺度，远超一个典型研究项目的周期，海量算力就必然会到来。"}, {"en": "Seeking an improvement that makes a difference in the shorter term, researchers seek to leverage their human knowledge of the domain, but the only thing that matters in the long run is the leveraging of computation.", "zh": "为了追求短期见效的改进，研究者倾向于利用自己对领域的人类知识；但从长远看，唯一重要的是利用算力。"}, {"en": "These two need not run counter to each other, but in practice they tend to. Time spent on one is time not spent on the other. There are psychological commitments to investment in one approach or the other. And the human-knowledge approach tends to complicate methods in ways that make them less suited to taking advantage of general methods leveraging computation.", "zh": "这两条路本不必对立，但在实践中往往如此。花在一条路上的时间就不能花在另一条上。研究者会对某一方法产生心理投入。而且，基于人类知识的方法倾向于让系统变得更复杂，反而降低了利用算力的通用方法所能发挥的效力。"}, {"en": "There were many examples of AI researchers' belated learning of this bitter lesson, and it is instructive to review some of the most prominent.", "zh": "AI 研究者迟迟才学到这个苦涩教训的案例比比皆是。回顾其中最突出的几个，很有启发性。"}]}, {"id": "part2", "title": "历史案例：四个领域的同一模式", "pairs": [{"en": "", "zh": "<strong class=\"subhead\">计算机国际象棋</strong>"}, {"en": "In computer chess, the methods that defeated the world champion, Kasparov, in 1997, were based on massive, deep search. At the time, this was looked upon with dismay by the majority of computer-chess researchers who had pursued methods that leveraged human understanding of the special structure of chess.", "zh": "1997 年击败世界冠军卡斯帕罗夫的计算机国际象棋方法，基于大规模深度搜索。当时，大多数计算机象棋研究者对此感到沮丧——他们一直在追求利用人类对国际象棋特殊结构的理解来构建系统。"}, {"en": "When a simpler, search-based approach with special hardware and software proved vastly more effective, these human-knowledge-based chess researchers were not good losers. They said that \"brute force\" search may have won this time, but it was not a general strategy, and anyway it was not how people played chess. These researchers wanted methods based on human input to win and were disappointed when they did not.", "zh": "当一种更简单的、基于搜索的方法配合专用硬件和软件被证明远远更有效时，这些基于人类知识的象棋研究者输得很不服气。他们说「暴力搜索」这次可能赢了，但它不是通用策略，而且也不是人类下棋的方式。这些研究者希望基于人类输入的方法获胜，当它们没有获胜时，他们很失望。"}, {"en": "", "zh": "<strong class=\"subhead\">计算机围棋</strong>"}, {"en": "A similar pattern of research progress was seen in computer Go, only delayed by a further 20 years. Enormous initial efforts went into avoiding search by taking advantage of human knowledge, or of the special features of the game, but all those efforts proved irrelevant, or worse, once search was applied effectively at scale.", "zh": "计算机围棋的研究进展也呈现了相似的模式，只是晚了 20 年。最初大量的努力都投入到利用人类知识或围棋的特殊性质来避免搜索，但一旦搜索在大规模上被有效应用，所有这些努力都变得无关紧要，甚至更糟。"}, {"en": "Also important was the use of learning by self play to learn a value function. Learning by self play, and learning in general, is like search in that it enables massive computation to be brought to bear. Search and learning are the two most important classes of techniques for utilizing massive amounts of computation in AI research.", "zh": "同样重要的还有通过自我对弈来学习价值函数。自我对弈学习，以及广义上的学习，和搜索一样，都能让海量算力发挥作用。搜索和学习，是在 AI 研究中利用海量算力的两类最重要的技术。"}, {"en": "In computer Go, as in computer chess, researchers' initial effort was directed towards utilizing human understanding (so that less search was needed) and only much later was much greater success had by embracing search and learning.", "zh": "在计算机围棋中，和计算机象棋一样，研究者最初的努力方向是利用人类理解（以减少搜索量），直到很久以后，拥抱搜索和学习才带来了大得多的成功。"}, {"en": "", "zh": "<strong class=\"subhead\">语音识别</strong>"}, {"en": "In speech recognition, there was an early competition, sponsored by DARPA, in the 1970s. Entrants included a host of special methods that took advantage of human knowledge — knowledge of words, of phonemes, of the human vocal tract, etc.", "zh": "在语音识别领域，1970 年代 DARPA 赞助了一场早期竞赛。参赛者使用了大量利用人类知识的专用方法——词汇知识、音素知识、人类声道知识等等。"}, {"en": "On the other side were newer methods that were more statistical in nature and did much more computation, based on hidden Markov models (HMMs). Again, the statistical methods won out over the human-knowledge-based methods.", "zh": "另一方则是更新颖的方法，本质上更偏向统计，做更多的计算，基于隐马尔可夫模型（HMM）。结果，统计方法再次战胜了基于人类知识的方法。"}, {"en": "This led to a major change in all of natural language processing, gradually over decades, where statistics and computation came to dominate the field. The recent rise of deep learning in speech recognition is the most recent step in this consistent direction. Deep learning methods rely even less on human knowledge, and use even more computation, together with learning on huge training sets, to produce dramatically better speech recognition systems.", "zh": "这最终导致了整个自然语言处理领域的重大变革——在几十年的时间里，统计和计算逐渐主导了这个领域。最近深度学习的崛起是这一方向的最新一步。深度学习方法更少依赖人类知识，使用更多计算，配合海量训练集上的学习，产出了显著更好的语音识别系统。"}, {"en": "As in the games, researchers always tried to make systems that worked the way the researchers thought their own minds worked — they tried to put that knowledge in their systems — but it proved ultimately counterproductive, and a colossal waste of researcher's time, when, through Moore's law, massive computation became available and a means was found to put it to good use.", "zh": "和棋类游戏一样，研究者总是试图让系统按照他们认为自己大脑工作的方式运行——他们试图把那些知识放入系统中。但当摩尔定律让海量算力成为可能，并且人们找到了善用算力的方法时，这种做法最终被证明是适得其反的，是对研究者时间的巨大浪费。"}, {"en": "", "zh": "<strong class=\"subhead\">计算机视觉</strong>"}, {"en": "In computer vision, there has been a similar pattern. Early methods conceived of vision as searching for edges, or generalized cylinders, or in terms of SIFT features. But today all this is discarded. Modern deep-learning neural networks use only the notions of convolution and certain kinds of invariances, and perform much better.", "zh": "计算机视觉也遵循了相似的模式。早期方法将视觉理解为搜索边缘、广义圆柱体或 SIFT 特征。但今天这些全被抛弃了。现代深度学习神经网络只使用卷积和某些不变性的概念，性能却好得多。"}]}, {"id": "part3", "title": "苦涩教训的启示", "pairs": [{"en": "This is a big lesson. As a field, we still have not thoroughly learned it, as we are continuing to make the same kind of mistakes. To see this, and to effectively resist it, we have to understand the appeal of these mistakes. We have to learn the bitter lesson that building in how we think we think does not work in the long run.", "zh": "这是一个重大的教训。作为一个领域，我们至今仍未彻底学会——我们仍在犯同样的错误。要看清这一点，并有效抵制它，我们必须理解这些错误的诱惑力所在。我们必须学会这个苦涩的教训：把我们自以为的思维方式构建进系统，从长远看是行不通的。"}, {"en": "The bitter lesson is based on the historical observations that: 1) AI researchers have often tried to build knowledge into their agents, 2) this always helps in the short term, and is personally satisfying to the researcher, but 3) in the long run it plateaus and even inhibits further progress, and 4) breakthrough progress eventually arrives by an opposing approach based on scaling computation by search and learning.", "zh": "这个苦涩教训建立在以下历史观察之上：1) AI 研究者经常试图将知识构建进 Agent 中；2) 这在短期内总是有帮助的，而且让研究者个人感到满足；3) 但从长远看，它会进入平台期，甚至抑制进一步进展；4) 突破性的进展最终来自相反的方法——通过搜索和学习来规模化算力。"}, {"en": "The eventual success is tinged with bitterness, and often incompletely digested, because it is success over a favored, human-centric approach.", "zh": "最终的成功带着苦涩，而且常常没有被充分消化——因为这是对一种被偏爱的、以人为中心的方法的胜利。"}, {"en": "One thing that should be learned from the bitter lesson is the great power of general purpose methods, of methods that continue to scale with increased computation even as the available computation becomes very great. The two methods that seem to scale arbitrarily in this way are <strong>search</strong> and <strong>learning</strong>.", "zh": "从这个苦涩教训中学到的第一点是：通用方法的巨大力量——这些方法能够随着算力增长而持续扩展，即使可用算力变得极其庞大。能够以这种方式任意扩展的两类方法是<strong>搜索</strong>和<strong>学习</strong>。"}, {"en": "The second general point to be learned from the bitter lesson is that the actual contents of minds are tremendously, irredeemably complex; we should stop trying to find simple ways to think about the contents of minds, such as simple ways to think about space, objects, multiple agents, or symmetries.", "zh": "第二个要点是：心智的真实内容极其、无可救药地复杂。我们应该停止试图找到思考心智内容的简单方式——比如简单地思考空间、物体、多智能体或对称性。"}, {"en": "All these are part of the arbitrary, intrinsically-complex, outside world. They are not what should be built in, as their complexity is endless; instead we should build in only the meta-methods that can find and capture this arbitrary complexity.", "zh": "所有这些都是任意的、本质上复杂的外部世界的一部分。它们不是应该被构建进系统的东西——因为它们的复杂性是无穷无尽的。我们应该只构建那些能够发现和捕捉这种任意复杂性的元方法。"}, {"en": "Essential to these methods is that they can find good approximations, but the search for them should be by our methods, not by us. We want AI agents that can discover like we can, not which contain what we have discovered. Building in our discoveries only makes it harder to see how the discovering process can be done.", "zh": "这些方法的关键在于，它们能发现好的近似解，但寻找这些解的过程应该由我们的方法来完成，而不是由我们亲自来做。我们想要的 AI Agent，是能像我们一样去发现的 Agent，而不是包含我们已经发现的东西的 Agent。将我们的发现构建进去，只会让我们更难看清发现过程本身该如何完成。"}]}]};
+
+// ====== Render ======
+var content = document.getElementById('content');
+var activeId = null;
+
+if(DATA.sections){
+  // v1 JSON format
+  DATA.sections.forEach(function(section, si){
+    var sec = document.createElement('div');
+    sec.className = 'section';
+    var h2 = document.createElement('div');
+    h2.className = 'section-title';
+    h2.textContent = section.title;
+    sec.appendChild(h2);
+    section.pairs.forEach(function(pair, pi){
+      var id = section.id + '-' + pi;
+      var p = document.createElement('div');
+      p.className = 'pair';
+      p.dataset.id = id;
+      var zc = document.createElement('div'); zc.className = 'col-zh line'; zc.innerHTML = pair.zh || '';
+      var ec = document.createElement('div'); ec.className = 'col-en line'; ec.innerHTML = pair.en || '';
+      p.appendChild(zc);
+      p.appendChild(ec);
+      sec.appendChild(p);
+    });
+    content.appendChild(sec);
+  });
+} else {
+  // v2 MD format
+  var enBlocks = DATA.en_md.split(/\n\n+/).filter(function(b){return b.trim()});
+  var zhBlocks = DATA.zh_md.split(/\n\n+/).filter(function(b){return b.trim()});
+  var len = Math.min(enBlocks.length, zhBlocks.length);
+  if(enBlocks.length !== zhBlocks.length){
+    var w = document.createElement('div');
+    w.style.cssText = 'padding:8px 16px;margin:16px 0;background:rgba(229,72,77,.08);border-radius:6px;color:#e5484d;font-size:.8rem';
+    w.textContent = '⚠ 段落数不匹配：EN ' + enBlocks.length + ' / ZH ' + zhBlocks.length;
+    content.appendChild(w);
+  }
+  for(var i=0;i<len;i++){
+    var isH = /^\s*#/.test(enBlocks[i]) || /^\s*#/.test(zhBlocks[i]);
+    if(isH){
+      var h = document.createElement('div');
+      h.className = 'section-title';
+      h.textContent = (enBlocks[i].replace(/^#+\s*/,'') + ' / ' + zhBlocks[i].replace(/^#+\s*/,'')).replace(/\/$/, '').replace(' / / ',' / ');
+      content.appendChild(h);
+    } else {
+      var p = document.createElement('div');
+      p.className = 'pair';
+      p.dataset.id = 'md-' + i;
+      var zc = document.createElement('div'); zc.className = 'col-zh line';
+      var ec = document.createElement('div'); ec.className = 'col-en line';
+      zc.innerHTML = zhBlocks[i].replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\*(.+?)\*/g,'<em>$1</em>').replace(/`(.+?)`/g,'<code>$1</code>').replace(/^> (.+)/gm,'<blockquote>$1</blockquote>');
+      ec.innerHTML = enBlocks[i].replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\*(.+?)\*/g,'<em>$1</em>').replace(/`(.+?)`/g,'<code>$1</code>').replace(/^> (.+)/gm,'<blockquote>$1</blockquote>');
+      p.appendChild(zc);
+      p.appendChild(ec);
+      content.appendChild(p);
+    }
+  }
+}
+
+// ====== Click ======
+content.addEventListener('click',function(e){
+  var pair = e.target.closest('.pair');
+  if(!pair) return;
+  var prev = document.querySelector('.pair.active');
+  if(prev) prev.classList.remove('active');
+  if(activeId === pair.dataset.id){activeId=null;return}
+  pair.classList.add('active');
+  activeId = pair.dataset.id;
+  pair.scrollIntoView({behavior:'smooth',block:'center'});
+});
+
+document.addEventListener('keydown',function(e){
+  if(e.key==='Escape'){var p=document.querySelector('.pair.active');if(p)p.classList.remove('active');activeId=null}
+});
+
+// ====== Buttons ======
+var swapped=false;
+document.getElementById('swapBtn').onclick=function(){
+  swapped=!swapped;
+  document.body.classList.toggle('swapped',swapped);
+};
+
+var dark=localStorage.getItem('dark')==='1';
+var darkBtn=document.getElementById('darkBtn');
+function setDark(on){
+  dark=on;document.body.classList.toggle('dark',on);
+  darkBtn.textContent=on?'☀️ 开灯':'🌙 关灯';
+  localStorage.setItem('dark',on?'1':'0');
+}
+if(dark)setDark(true);
+darkBtn.onclick=function(){setDark(!dark)};
+
+var langIdx=0;
+document.getElementById('langBtn').onclick=function(){
+  langIdx=(langIdx+1)%3;
+  document.body.classList.remove('lang-zh','lang-en');
+  if(langIdx===1)document.body.classList.add('lang-zh');
+  if(langIdx===2)document.body.classList.add('lang-en');
+  this.textContent=['📖 双语','🇨🇳 中文','🇬🇧 English'][langIdx];
+  document.getElementById('swapBtn').style.display=langIdx===0?'':'none';
+};
+</script>
+</body>
+</html>
