@@ -178,7 +178,7 @@
 <header class="header">
   <h1></h1>
   <div class="author"></div>
-  <button class="swap-btn" onclick="swapColumns()" title="切换左右顺序">⇄ 英中互换</button>
+  <button class="swap-btn" id="swapBtn" title="切换左右顺序">⇄ 英中互换</button>
 </header>
 
 <main class="main">
@@ -272,10 +272,10 @@ document.addEventListener('keydown',function(e){
 });
 
 var swapped=false;
-function swapColumns(){
+document.getElementById('swapBtn').addEventListener('click',function(){
   swapped=!swapped;
   document.body.classList.toggle('swapped',swapped);
-}
+});
 
 document.fonts.ready.then(function(){
   return fetch('./data.json');
