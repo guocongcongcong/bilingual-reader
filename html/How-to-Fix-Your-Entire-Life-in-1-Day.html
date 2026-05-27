@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How to Fix Your Entire Life in 1 Day · 一日重启协议</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #ffffff;
+    --bg-elevated: #ffffff;
+    --border: #e5e5e7;
+    --text-primary: #1a1a2e;
+    --text-secondary: #52525b;
+    --text-tertiary: #a1a1aa;
+    --accent: #4f46e5;
+    --accent-glow: rgba(79,70,229,0.08);
+    --highlight-bg: rgba(79,70,229,0.06);
+    --font-en: 'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+    --font-zh: 'PingFang SC','Hiragino Sans GB','Microsoft YaHei',sans-serif;
+  }
+
+  body.dark{
+    --bg: #0f0f13;
+    --bg-elevated: #1a1a24;
+    --border: #2a2a35;
+    --text-primary: #e4e4ec;
+    --text-secondary: #9898a8;
+    --text-tertiary: #5c5c6e;
+    --accent: #818cf8;
+    --accent-glow: rgba(129,140,248,0.1);
+    --highlight-bg: rgba(129,140,248,0.08);
+  }
+
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+  html{font-size:16px}
+
+  body{
+    background:var(--bg);
+    color:var(--text-primary);
+    font-family:var(--font-en);
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+  }
+
+  .header{
+    width:100%;
+    max-width:960px;
+    padding:64px 32px 48px;
+  }
+
+  .header h1{
+    font-size:1.5rem;
+    font-weight:600;
+    color:var(--text-primary);
+    letter-spacing:-0.02em;
+    line-height:1.4;
+    margin-bottom:8px;
+  }
+
+  .header .author{
+    font-size:0.8125rem;
+    color:var(--text-tertiary);
+    font-weight:400;
+  }
+
+  .swap-btn{
+    margin-top:12px;
+    padding:6px 16px;
+    border:1px solid var(--border);
+    border-radius:6px;
+    background:var(--bg-elevated);
+    color:var(--accent);
+    font-size:0.8rem;
+    font-family:inherit;
+    cursor:pointer;
+    transition:all 0.15s;
+  }
+  .swap-btn:hover,.dark-btn:hover,.lang-btn:hover{background:var(--highlight-bg);border-color:var(--accent)}
+
+  .dark-btn,.lang-btn{
+    margin-top:8px;
+    padding:6px 16px;
+    border:1px solid var(--border);
+    border-radius:6px;
+    background:var(--bg-elevated);
+    color:var(--accent);
+    font-size:0.8rem;
+    font-family:inherit;
+    cursor:pointer;
+    transition:all 0.15s;
+  }
+
+  body.lang-zh .col.en{display:none}
+  body.lang-zh .col.zh{flex:1 1 auto}
+  body.lang-en .col.zh{display:none}
+  body.lang-en .col.en{flex:1 1 auto}
+
+  .main{
+    width:100%;
+    max-width:960px;
+    padding:0 32px 120px;
+  }
+
+  .section{margin-bottom:56px}
+
+  .section-title{
+    text-align:center;
+    font-size:0.9375rem;
+    font-weight:600;
+    letter-spacing:0.02em;
+    background:linear-gradient(135deg,#5e6ad2 0%,#a78bfa 100%);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    background-clip:text;
+    margin:0 0 28px;
+    padding-top:8px;
+  }
+
+  .section+.section .section-title{
+    border-top:1px solid var(--border);
+    padding-top:48px;
+  }
+
+  .pair{
+    display:flex;
+    gap:24px;
+    align-items:flex-start;
+    padding:8px 12px;
+    margin:0 -12px;
+    border-radius:6px;
+    cursor:pointer;
+    border-left:2px solid transparent;
+    transition:background 0.15s ease,border-color 0.15s ease;
+  }
+
+  .pair:hover{background:var(--highlight-bg)}
+
+  .pair.active{
+    background:var(--highlight-bg);
+    border-left-color:var(--accent);
+  }
+
+  .pair+.pair{margin-top:6px;padding-top:8px;border-top:1px solid var(--border)}
+
+  .col.en{flex:0 0 50%;min-width:0;font-family:var(--font-en)}
+  .col.zh{flex:0 0 50%;min-width:0;font-family:var(--font-zh)}
+
+  body.swapped .col.en{order:1}
+  body.swapped .col.zh{order:2}
+
+  .line{
+    font-size:16px;
+    line-height:1.65;
+    color:var(--text-secondary);
+    transition:color 0.15s ease;
+    margin:0;
+  }
+  .pair.active .line{color:var(--text-primary)}
+
+  .line code{font-size:0.875em;background:var(--highlight-bg);padding:2px 5px;border-radius:3px;font-family:'SF Mono','Fira Code',monospace}
+  .line pre{background:var(--highlight-bg);padding:12px 16px;border-radius:6px;overflow-x:auto;margin:8px 0;font-size:0.8125rem}
+  .line pre code{background:none;padding:0;border-radius:0}
+  .line strong{color:var(--text-primary)}
+  .line blockquote,.line .quote{border-left:2px solid var(--accent);padding-left:12px;margin:6px 0;color:var(--text-tertiary);font-style:italic;display:block}
+  .line .subhead{display:block;margin-top:12px;font-size:0.9375rem}
+  .line em{font-style:italic}
+
+  .loading,.error{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:80px 0;
+    font-size:0.875rem;
+  }
+
+  .loading{color:var(--text-tertiary)}
+  .error{color:#e5484d}
+
+  @media(max-width:768px){
+    .header{padding:40px 20px 32px}
+    .header h1{font-size:1.25rem}
+    .main{padding:0 20px 80px}
+    .section{margin-bottom:40px}
+
+    .pair{
+      flex-direction:column;
+      gap:4px;
+      padding:12px;
+    }
+
+    .col.zh{
+      border-top:1px solid var(--border);
+      padding-top:8px;
+    }
+
+    .section+.section .section-title{padding-top:36px}
+  }
+
+  body.swapped .pair .col.en{order:1}
+  body.swapped .pair .col.zh{order:2;border-top:none;padding-top:0}
+
+  @media(min-width:1200px){
+    .header,.main{max-width:1040px}
+  }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <h1></h1>
+  <div class="author"></div>
+  <button class="swap-btn" id="swapBtn" title="切换左右顺序">⇄ 英中互换</button>
+  <button class="dark-btn" id="darkBtn" title="关灯/开灯">🌙 关灯</button>
+  <button class="lang-btn" id="langBtn" title="切换语言">📖 双语</button>
+</header>
+
+<main class="main">
+  <div class="loading">Loading...</div>
+</main>
+
+<script type="module">
+var main=document.querySelector('.main');
+var titleEl=document.querySelector('.header h1');
+var authorEl=document.querySelector('.header .author');
+
+var activePairId=null;
+
+function createPairEl(pairId,enText,zhText){
+  var pair=document.createElement('div');
+  pair.className='pair';
+  pair.dataset.pairId=pairId;
+
+  var zhCol=document.createElement('div');
+  zhCol.className='col zh';
+  var zhP=document.createElement('p');
+  zhP.className='line';
+  zhP.innerHTML=zhText;
+  zhCol.appendChild(zhP);
+
+  var enCol=document.createElement('div');
+  enCol.className='col en';
+  var enP=document.createElement('p');
+  enP.className='line';
+  enP.innerHTML=enText;
+  enCol.appendChild(enP);
+
+  pair.appendChild(zhCol);
+  pair.appendChild(enCol);
+  return pair;
+}
+
+function renderAll(data){
+  var fragment=document.createDocumentFragment();
+
+  for(var s=0;s<data.sections.length;s++){
+    var section=data.sections[s];
+    var secEl=document.createElement('section');
+    secEl.className='section';
+
+    var heading=document.createElement('h2');
+    heading.className='section-title';
+    heading.textContent=section.title;
+    secEl.appendChild(heading);
+
+    for(var i=0;i<section.pairs.length;i++){
+      var pairId=section.id+'-'+i;
+      secEl.appendChild(createPairEl(pairId,section.pairs[i].en,section.pairs[i].zh));
+    }
+
+    fragment.appendChild(secEl);
+  }
+
+  while(main.firstChild)main.removeChild(main.firstChild);
+  main.appendChild(fragment);
+}
+
+function toggleHighlight(pairId){
+  if(activePairId){
+    var prev=document.querySelector('.pair[data-pair-id="'+activePairId+'"]');
+    if(prev)prev.classList.remove('active');
+  }
+
+  if(activePairId===pairId){
+    activePairId=null;
+    return;
+  }
+
+  var curr=document.querySelector('.pair[data-pair-id="'+pairId+'"]');
+  if(curr)curr.classList.add('active');
+  activePairId=pairId;
+}
+
+main.addEventListener('click',function(e){
+  var pair=e.target.closest('.pair');
+  if(!pair)return;
+  toggleHighlight(pair.dataset.pairId);
+});
+
+document.addEventListener('keydown',function(e){
+  if(e.key==='Escape'&&activePairId){
+    var prev=document.querySelector('.pair[data-pair-id="'+activePairId+'"]');
+    if(prev)prev.classList.remove('active');
+    activePairId=null;
+  }
+});
+
+var swapped=false;
+document.getElementById('swapBtn').addEventListener('click',function(){
+  swapped=!swapped;
+  document.body.classList.toggle('swapped',swapped);
+});
+
+var darkBtn=document.getElementById('darkBtn');
+var isDark=localStorage.getItem('dark')==='1';
+function setDark(on){
+  isDark=on;
+  document.body.classList.toggle('dark',on);
+  darkBtn.innerHTML=on?'☀️ 开灯':'🌙 关灯';
+  localStorage.setItem('dark',on?'1':'0');
+}
+if(isDark)setDark(true);
+darkBtn.addEventListener('click',function(){setDark(!isDark);});
+
+var langBtn=document.getElementById('langBtn');
+var langs=['','zh','en']; // ''=双语, 'zh'=仅中文, 'en'=仅英文
+var langIdx=0;
+function setLang(idx){
+  langIdx=idx;
+  var cls=langs[idx];
+  document.body.classList.remove('lang-zh','lang-en');
+  if(cls)document.body.classList.add('lang-'+cls);
+  langBtn.innerHTML=idx===0?'📖 双语':idx===1?'🇨🇳 中文':'🇬🇧 English';
+  document.getElementById('swapBtn').style.display=idx===0?'':'none';
+}
+langBtn.addEventListener('click',function(){setLang((langIdx+1)%3);});
+
+var data = {
+  "title": "How to Fix Your Entire Life in 1 Day · 一日重启协议",
+  "author": "Dan Koe · 译：CSDN/语山君",
+  "sections": [
+    {
+      "id": "intro",
+      "title": "Introduction · 引言",
+      "pairs": [
+        { "en": "You're probably going to quit your new years resolution.", "zh": "你或许很快就会放弃自己的新年决心。" },
+        { "en": "And that's okay. Most people do (studies show 80-90% failure rates) because most people don't actually want to change on a deep, internal level.", "zh": "这没什么大不了的。大多数人都是如此（研究显示失败率高达80%-90%），因为大多数人并非发自内心深处渴望改变。" },
+        { "en": "They go about changing their life in the completely wrong way.", "zh": "他们改变人生的方式从一开始就完全错了。" },
+        { "en": "Human nature is a bitch, and the worst feeling is when you make a promise to yourself and can't help but break it.", "zh": "人性本就复杂难缠，而最糟糕的感受，莫过于向自己许下承诺，却身不由己地违背它。" },
+        { "en": "You start to feel helpless, and if you don't know what you're doing, you may continue the cycle for years on end: always wanting to change, but never being able to.", "zh": "你会开始感到无助，若始终不得其法，这种循环可能会持续数年：一直渴望改变，却永远无法迈出实质性的一步。" }
+      ]
+    },
+    {
+      "id": "part1",
+      "title": "Part I · 身份认同",
+      "pairs": [
+        { "en": "You aren't where you want to be because you aren't the person who would be there.", "zh": "你到不了想去的地方，因为你还不是能站在那里的人。" },
+        { "en": "Changing your actions to make progress toward the goal (least important, second order).", "zh": "改变行为，朝着目标推进（相对次要，属于次级因素）。" },
+        { "en": "Changing who you are so that your behavior naturally follows (most important, first order).", "zh": "改变自我，让行为自然而然随之转变（至关重要，属于核心因素）。" },
+        { "en": "Most people set a surface-level goal, hype themselves up to remain disciplined for the first few weeks, then go back to their old ways without much struggle, because they were trying to build a great life on a rotting foundation.", "zh": "大多数人只会设定流于表面的目标，在最初几周给自己打鸡血强行自律，而后便毫不费力地回到老样子——因为他们试图在腐朽的根基之上，搭建所谓的美好人生。" },
+        { "en": "If you want a specific outcome in life, you must have the lifestyle that creates that outcome long before you reach it.", "zh": "若你渴望人生达成某个特定目标，那么在实现它之前，你必须先拥有能造就这个结果的生活方式。" },
+        { "en": "When you truly change yourself, all of your habits that don't move the needle toward your goal become disgusting.", "zh": "当你真正实现自我蜕变后，所有无助于目标达成的习惯都会变得令人厌恶。" }
+      ]
+    },
+    {
+      "id": "part2",
+      "title": "Part II · 潜意识目标",
+      "pairs": [
+        { "en": "Trust only movement. Life happens at the level of events, not of words.", "zh": "只相信行动。生活发生在事件的层面，而非言语的层面。" },
+        { "en": "Real change, at its core, is about changing your subconscious goals.", "zh": "真正的改变，其核心在于改变你潜意识里的目标。" },
+        { "en": "You aren't where you want to be because you don't want to be there — your subconscious goals are protecting you from the judgment that comes with finishing and publishing your work.", "zh": "你并非真的想去那里——你的潜意识目标在保护你免受完成和发表作品带来的评判。" }
+      ]
+    },
+    {
+      "id": "part3",
+      "title": "Part III · 身份恐惧",
+      "pairs": [
+        { "en": "When your identity is threatened, your body reacts the same as a physical threat — fight or flight.", "zh": "当你的身份受到威胁时，你的身体反应和面对物理威胁一样——战或逃。" },
+        { "en": "You set a goal → perceive reality through its lens → notice helpful info → act & get feedback → behavior becomes automatic → it merges into identity → you DEFEND that identity → identity shapes new goals.", "zh": "设定目标 → 通过目标滤镜感知现实 → 注意到有帮助的信息 → 行动并接收反馈 → 行为自动化 → 融入自我身份 → 捍卫这个身份 → 身份塑造新目标。" }
+      ]
+    },
+    {
+      "id": "part6",
+      "title": "Part VI · 一日重启协议",
+      "pairs": [
+        { "en": "Describe the vague, lingering dissatisfaction you've learned to live with.", "zh": "描述那种你已经学会忍受的、平淡却挥之不去的不满。" },
+        { "en": "What do you complain about repeatedly but never change?", "zh": "你反复抱怨却从不改变的是什么？" },
+        { "en": "What truth about your current life are you terrified to tell someone you deeply respect?", "zh": "关于你当前的生活，有什么真相是你害怕告诉一个你深深敬重的人的？" },
+        { "en": "Describe an ordinary Tuesday 5 years from now if nothing changes.", "zh": "如果5年什么都不变，描述一个普通的周二。" },
+        { "en": "If you could snap your fingers and live a different life in 3 years, what would an ordinary Tuesday look like?", "zh": "如果你能打个响指在3年后过上另一种生活，一个普通的周二会是什么样？" },
+        { "en": "Am I walking toward the life I dread or the life I desire?", "zh": "我在走向我讨厌的人生，还是我渴望的人生？" },
+        { "en": "When today was I most alive? When was I most numb?", "zh": "今天什么时候最有活力？什么时候最麻木？" },
+        { "en": "One-sentence anti-vision: what will I NOT let my life become?", "zh": "一句话反愿景：我绝不让我的人生变成什么。" },
+        { "en": "One-sentence minimum viable vision: what am I building?", "zh": "一句话最小可行愿景：我正在建设什么。" },
+        { "en": "1-year goal → 1-month project → 2-3 daily leverage actions", "zh": "1年目标 → 1月项目 → 每日2-3个杠杆行动。" }
+      ]
+    },
+    {
+      "id": "part7",
+      "title": "Part VII · 人生游戏化",
+      "pairs": [
+        { "en": "Victory Condition → Vision", "zh": "胜利条件 → 愿景" },
+        { "en": "Failure Penalty → Anti-Vision", "zh": "失败惩罚 → 反愿景" },
+        { "en": "Main Quest → 1-Year Goal", "zh": "主线任务 → 1年目标" },
+        { "en": "Boss Fight → 1-Month Project", "zh": "Boss战 → 1月项目" },
+        { "en": "Daily Quests → Daily Leverage Actions", "zh": "每日任务 → 每日杠杆行动" },
+        { "en": "Game Rules → Non-Negotiable Constraints", "zh": "游戏规则 → 绝不牺牲的底线" },
+        { "en": "Goals are not endpoints — they are a cognitive lens. Happiness and satisfaction lie in the process of continuous progress.", "zh": "目标并非为了「达成」而设定——它是一种认知透镜。快乐与满足，藏在不断进步的过程中。" },
+        { "en": "The only real test of intelligence is if you get what you want out of life.", "zh": "衡量一个人是否真正聪明的唯一标准，就是看他能不能搞到自己想要的人生。" }
+      ]
+    }
+  ]
+};
+document.title=data.title;
+titleEl.textContent=data.title;
+authorEl.textContent=data.author;
+renderAll(data);
+</script>
+
+</body>
+</html>
