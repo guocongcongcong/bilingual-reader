@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How to Fix Your Entire Life in 1 Day · 一日重启协议</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0b;
+    --bg-elevated: #131316;
+    --border: #1e1e24;
+    --text-primary: #e4e4e7;
+    --text-secondary: #a1a1aa;
+    --text-tertiary: #71717a;
+    --accent: #5e6ad2;
+    --accent-glow: rgba(94,106,210,0.12);
+    --highlight-bg: rgba(94,106,210,0.08);
+    --font-en: 'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+    --font-zh: 'PingFang SC','Hiragino Sans GB','Microsoft YaHei',sans-serif;
+  }
+
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+  html{font-size:16px}
+
+  body{
+    background:var(--bg);
+    color:var(--text-primary);
+    font-family:var(--font-en);
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+  }
+
+  .header{
+    width:100%;
+    max-width:960px;
+    padding:64px 32px 48px;
+  }
+
+  .header h1{
+    font-size:1.5rem;
+    font-weight:600;
+    color:var(--text-primary);
+    letter-spacing:-0.02em;
+    line-height:1.4;
+    margin-bottom:8px;
+  }
+
+  .header .author{
+    font-size:0.8125rem;
+    color:var(--text-tertiary);
+    font-weight:400;
+  }
+
+  .main{
+    width:100%;
+    max-width:960px;
+    padding:0 32px 120px;
+  }
+
+  .section{margin-bottom:56px}
+
+  .section-title{
+    text-align:center;
+    font-size:0.9375rem;
+    font-weight:600;
+    letter-spacing:0.02em;
+    background:linear-gradient(135deg,#5e6ad2 0%,#a78bfa 100%);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    background-clip:text;
+    margin:0 0 28px;
+    padding-top:8px;
+  }
+
+  .section+.section .section-title{
+    border-top:1px solid var(--border);
+    padding-top:48px;
+  }
+
+  .pair{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:32px;
+    align-items:start;
+    padding:10px 12px;
+    margin:0 -12px;
+    border-radius:6px;
+    cursor:pointer;
+    border-left:2px solid transparent;
+    transition:background 0.15s ease,border-color 0.15s ease;
+  }
+
+  .pair:hover{background:rgba(255,255,255,0.015)}
+
+  .pair.active{
+    background:var(--highlight-bg);
+    border-left-color:var(--accent);
+  }
+
+  .pair+.pair{margin-top:1px}
+
+  .col{min-width:0}
+
+  .col.en{font-family:var(--font-en)}
+  .col.zh{font-family:var(--font-zh)}
+
+  .line{
+    font-size:16px;
+    line-height:1.65;
+    color:var(--text-secondary);
+    transition:color 0.15s ease;
+    white-space:pre-wrap;
+    word-break:break-word;
+  }
+
+  .pair.active .line{color:var(--text-primary)}
+
+  .loading,.error{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:80px 0;
+    font-size:0.875rem;
+  }
+
+  .loading{color:var(--text-tertiary)}
+  .error{color:#e5484d}
+
+  @media(max-width:768px){
+    .header{padding:40px 20px 32px}
+    .header h1{font-size:1.25rem}
+    .main{padding:0 20px 80px}
+    .section{margin-bottom:40px}
+
+    .pair{
+      grid-template-columns:1fr;
+      gap:6px;
+      padding:12px;
+    }
+
+    .col.zh{
+      border-top:1px solid var(--border);
+      padding-top:8px;
+    }
+
+    .section+.section .section-title{padding-top:36px}
+  }
+
+  @media(min-width:1200px){
+    .header,.main{max-width:1040px}
+    .pair{gap:48px}
+  }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <h1></h1>
+  <div class="author"></div>
+</header>
+
+<main class="main">
+  <div class="loading">Loading...</div>
+</main>
+
+<script type="module">
+import { prepareWithSegments, layoutWithLines } from 'https://cdn.jsdelivr.net/npm/@chenglou/pretext/dist/layout.js';
+
+var main=document.querySelector('.main');
+var titleEl=document.querySelector('.header h1');
+var authorEl=document.querySelector('.header .author');
+
+var EN_FONT_STR='16px Inter';
+var ZH_FONT_STR='16px "PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif';
+var LINE_HEIGHT=26;
+var BREAKPOINT=768;
+var DESKTOP_GAP=32;
+
+var activePairId=null;
+var pairMap={};
+
+function layoutText(text,fontStr,maxWidth){
+  var prepared=prepareWithSegments(text,fontStr);
+  var result=layoutWithLines(prepared,maxWidth,LINE_HEIGHT);
+  return result.lines||[];
+}
+
+function getColumnWidth(){
+  return (window.innerWidth<=BREAKPOINT)?main.clientWidth:((main.clientWidth-DESKTOP_GAP)/2);
+}
+
+function createLineEl(lineData,lineIdx,pairId,side){
+  var div=document.createElement('div');
+  div.className='line';
+  div.dataset.pairId=pairId;
+  div.dataset.side=side;
+  div.dataset.lineIdx=lineIdx;
+  div.textContent=lineData.text;
+  return div;
+}
+
+function createPairEl(pairId,enLines,zhLines){
+  var pair=document.createElement('div');
+  pair.className='pair';
+  pair.dataset.pairId=pairId;
+
+  var enCol=document.createElement('div');
+  enCol.className='col en';
+  for(var i=0;i<enLines.length;i++){
+    enCol.appendChild(createLineEl(enLines[i],i,pairId,'en'));
+  }
+
+  var zhCol=document.createElement('div');
+  zhCol.className='col zh';
+  for(var i=0;i<zhLines.length;i++){
+    zhCol.appendChild(createLineEl(zhLines[i],i,pairId,'zh'));
+  }
+
+  pair.appendChild(enCol);
+  pair.appendChild(zhCol);
+  return pair;
+}
+
+function renderAll(data){
+  var colWidth=getColumnWidth();
+  var fragment=document.createDocumentFragment();
+  pairMap={};
+
+  for(var s=0;s<data.sections.length;s++){
+    var section=data.sections[s];
+    var secEl=document.createElement('section');
+    secEl.className='section';
+
+    var heading=document.createElement('h2');
+    heading.className='section-title';
+    heading.textContent=section.title;
+    secEl.appendChild(heading);
+
+    for(var i=0;i<section.pairs.length;i++){
+      var pairId=section.id+'-'+i;
+      var enLines,zhLines;
+
+      try{
+        enLines=layoutText(section.pairs[i].en,EN_FONT_STR,colWidth);
+        zhLines=layoutText(section.pairs[i].zh,ZH_FONT_STR,colWidth);
+      }catch(e){
+        enLines=[{text:section.pairs[i].en,startIndex:0,endIndex:section.pairs[i].en.length}];
+        zhLines=[{text:section.pairs[i].zh,startIndex:0,endIndex:section.pairs[i].zh.length}];
+      }
+
+      pairMap[pairId]={en:enLines,zh:zhLines};
+      secEl.appendChild(createPairEl(pairId,enLines,zhLines));
+    }
+
+    fragment.appendChild(secEl);
+  }
+
+  while(main.firstChild)main.removeChild(main.firstChild);
+  main.appendChild(fragment);
+}
+
+function findPairAt(clientX,clientY){
+  var el=document.elementFromPoint(clientX,clientY);
+  if(!el)return null;
+
+  var lineEl=el.closest('.line');
+  if(!lineEl)return null;
+
+  var pairId=lineEl.dataset.pairId;
+  if(!pairId)return null;
+
+  var pairData=pairMap[pairId];
+  var side=lineEl.dataset.side;
+  var lineIdx=parseInt(lineEl.dataset.lineIdx,10);
+
+  if(pairData&&pairData[side]&&pairData[side][lineIdx]){
+    var lineData=pairData[side][lineIdx];
+    var charOffset=0;
+
+    if(document.caretPositionFromPoint){
+      var pos=document.caretPositionFromPoint(clientX,clientY);
+      if(pos&&pos.offsetNode===lineEl.firstChild){
+        charOffset=pos.offset;
+      }
+    }
+
+    var absCharPos=(lineData.startIndex||0)+charOffset;
+    return{
+      pairId:pairId,
+      side:side,
+      lineIdx:lineIdx,
+      charOffset:charOffset,
+      absCharPos:absCharPos,
+      lineText:lineData.text
+    };
+  }
+
+  return{pairId:pairId};
+}
+
+function toggleHighlight(pairId){
+  if(activePairId){
+    var prev=document.querySelector('.pair[data-pair-id="'+activePairId+'"]');
+    if(prev)prev.classList.remove('active');
+  }
+
+  if(activePairId===pairId){
+    activePairId=null;
+    return;
+  }
+
+  var curr=document.querySelector('.pair[data-pair-id="'+pairId+'"]');
+  if(curr)curr.classList.add('active');
+  activePairId=pairId;
+}
+
+main.addEventListener('click',function(e){
+  var result=findPairAt(e.clientX,e.clientY);
+  if(!result)return;
+  toggleHighlight(result.pairId);
+});
+
+document.addEventListener('keydown',function(e){
+  if(e.key==='Escape'&&activePairId){
+    var prev=document.querySelector('.pair[data-pair-id="'+activePairId+'"]');
+    if(prev)prev.classList.remove('active');
+    activePairId=null;
+  }
+});
+
+var resizeTimeout;
+var cachedData=null;
+
+window.addEventListener('resize',function(){
+  if(!cachedData)return;
+  clearTimeout(resizeTimeout);
+  resizeTimeout=setTimeout(function(){renderAll(cachedData);},200);
+});
+
+document.fonts.ready.then(function(){
+  return fetch('./data.json');
+}).then(function(resp){
+  if(!resp.ok)throw new Error('HTTP '+resp.status);
+  return resp.json();
+}).then(function(data){
+  cachedData=data;
+  document.title=data.title;
+  titleEl.textContent=data.title;
+  authorEl.textContent=data.author;
+  renderAll(data);
+}).catch(function(err){
+  while(main.firstChild)main.removeChild(main.firstChild);
+  var errDiv=document.createElement('div');
+  errDiv.className='error';
+  errDiv.textContent='Failed to load: '+err.message;
+  main.appendChild(errDiv);
+  console.error(err);
+});
+</script>
+
+</body>
+</html>
