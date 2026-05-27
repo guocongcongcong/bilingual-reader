@@ -81,9 +81,9 @@
     cursor:pointer;
     transition:all 0.15s;
   }
-  .swap-btn:hover,.dark-btn:hover{background:var(--highlight-bg);border-color:var(--accent)}
+  .swap-btn:hover,.dark-btn:hover,.lang-btn:hover{background:var(--highlight-bg);border-color:var(--accent)}
 
-  .dark-btn{
+  .dark-btn,.lang-btn{
     margin-top:8px;
     padding:6px 16px;
     border:1px solid var(--border);
@@ -95,6 +95,11 @@
     cursor:pointer;
     transition:all 0.15s;
   }
+
+  body.lang-zh .col.en{display:none}
+  body.lang-zh .col.zh{flex:1 1 auto}
+  body.lang-en .col.zh{display:none}
+  body.lang-en .col.en{flex:1 1 auto}
 
   .main{
     width:100%;
@@ -205,6 +210,7 @@
   <div class="author"></div>
   <button class="swap-btn" id="swapBtn" title="切换左右顺序">⇄ 英中互换</button>
   <button class="dark-btn" id="darkBtn" title="关灯/开灯">🌙 关灯</button>
+  <button class="lang-btn" id="langBtn" title="切换语言">📖 双语</button>
 </header>
 
 <main class="main">
@@ -313,6 +319,18 @@ function setDark(on){
 }
 if(isDark)setDark(true);
 darkBtn.addEventListener('click',function(){setDark(!isDark);});
+
+var langBtn=document.getElementById('langBtn');
+var langs=['','zh','en']; // ''=双语, 'zh'=仅中文, 'en'=仅英文
+var langIdx=0;
+function setLang(idx){
+  langIdx=idx;
+  var cls=langs[idx];
+  document.body.classList.remove('lang-zh','lang-en');
+  if(cls)document.body.classList.add('lang-'+cls);
+  langBtn.innerHTML=idx===0?'📖 双语':idx===1?'🇨🇳 中文':'🇬🇧 English';
+}
+langBtn.addEventListener('click',function(){setLang((langIdx+1)%3);});
 
 document.fonts.ready.then(function(){
   return fetch('./data.json');
