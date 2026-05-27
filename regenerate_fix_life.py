@@ -1,0 +1,205 @@
+#!/usr/bin/env python3
+"""Regenerate How to Fix Your Entire Life bilingual data with HTML formatting."""
+
+import json, os, re
+
+BASE = os.path.expanduser("~/Downloads/workspace/bilingual-reader")
+
+data = {
+    "title": "How to Fix Your Entire Life in 1 Day · 一日重启协议",
+    "author": "Dan Koe · 双语阅读",
+    "sections": [
+        {
+            "id": "intro",
+            "title": "Introduction · 你为什么会放弃新年决心",
+            "pairs": [
+                {"en": "<strong>You're probably going to quit your new year's resolution.</strong>",
+                 "zh": "<strong>你或许很快就会放弃自己的新年决心。</strong>"},
+                {"en": "And that's okay. Most people do (studies show 80-90% failure rates) because most people don't actually want to change on a deep, internal level.",
+                 "zh": "这没什么大不了的。大多数人都是如此（研究显示失败率高达80%-90%），因为大多数人并非发自内心深处渴望改变。"},
+                {"en": "They go about changing their life in the completely wrong way.",
+                 "zh": "他们改变人生的方式从一开始就完全错了。"},
+                {"en": "Human nature is a bitch, and the worst feeling is when you make a promise to yourself and can't help but break it.",
+                 "zh": "人性本就复杂难缠，而最糟糕的感受，莫过于向自己许下承诺，却身不由己地违背它。"},
+                {"en": "You start to feel helpless, and if you don't know what you're doing, you may continue the cycle for years on end: always wanting to change, but never being able to.",
+                 "zh": "你会开始感到无助，若始终不得其法，这种循环可能会持续数年：一直渴望改变，却永远无法迈出实质性的一步。"}
+            ]
+        },
+        {
+            "id": "part1",
+            "title": "Part I · 你尚未成为那个人",
+            "pairs": [
+                {"en": "<blockquote>You aren't where you want to be because you aren't the person who would be there.</blockquote>",
+                 "zh": "<blockquote>你到不了想去的地方，因为你还不是能站在那里的人。</blockquote>"},
+                {"en": "Changing your actions to make progress toward the goal <strong>(least important, second order)</strong>.",
+                 "zh": "改变行为，朝着目标推进 <strong>（相对次要，属于次级因素）</strong>。"},
+                {"en": "Changing who you are so that your behavior naturally follows <strong>(most important, first order)</strong>.",
+                 "zh": "改变自我，让行为自然而然随之转变 <strong>（至关重要，属于核心因素）</strong>。"},
+                {"en": "Most people set a surface-level goal, hype themselves up to remain disciplined for the first few weeks, then go back to their old ways without much struggle — because they were trying to build a great life on a rotting foundation.",
+                 "zh": "大多数人只会设定流于表面的目标，在最初几周给自己打鸡血强行自律，而后便毫不费力地回到老样子——因为他们试图在<strong>腐烂的根基</strong>之上，搭建所谓的美好人生。"},
+                {"en": "A bodybuilder doesn't need willpower to eat healthy. A CEO doesn't need discipline to wake up and lead. They <em>can't imagine living any other way</em>.",
+                 "zh": "健美选手不需要意志力吃健康餐，CEO 不需要自律才能起床领导——他们 <em>无法想象以其他方式生活</em>。"},
+                {"en": "<blockquote>If you want a specific outcome in life, you must have the lifestyle that creates that outcome long before you reach it.</blockquote>",
+                 "zh": "<blockquote>若你渴望人生达成某个特定目标，那么在实现它之前，你必须先拥有能造就这个结果的生活方式。</blockquote>"},
+                {"en": "When you truly change yourself, all of your habits that don't move the needle toward your goal become <strong>disgusting</strong> — because you know exactly where they lead.",
+                 "zh": "当你真正实现自我蜕变后，所有无助于目标达成的习惯都会变得<strong>令你厌恶</strong>——因为你深刻地知道它们通向何处。"}
+            ]
+        },
+        {
+            "id": "part2",
+            "title": "Part II · 你并非真正想去那里",
+            "pairs": [
+                {"en": "Alfred Adler's <strong>Teleology</strong>: All behavior is goal-oriented, even when you're not aware of it.",
+                 "zh": "阿尔弗雷德·阿德勒的 <strong>目的论（Teleology）</strong>：所有行为都是目标导向的，即使你意识不到。"},
+                {"en": "<blockquote>Trust only movement. Life happens at the level of events, not of words. <em>— Alfred Adler</em></blockquote>",
+                 "zh": "<blockquote>只相信行动。生活发生在事件的层面，而非言语的层面。<em>—— 阿尔弗雷德·阿德勒</em></blockquote>"},
+                {"en": "You procrastinate on writing not because you're lazy — but because your subconscious goal might be to <strong>protect yourself from the judgment that comes with finishing and publishing your work</strong>.",
+                 "zh": "你拖延写作，不是因为你懒——而是因为你的潜意识目标可能是 <strong>保护自己免受完成和发表作品带来的评判</strong>。"},
+                {"en": "You don't <em>not</em> want to succeed. You just want to avoid failure <strong>more</strong>.",
+                 "zh": "你不是<em>不想</em>成功，你只是<strong>更想</strong>避免失败。"},
+                {"en": "<blockquote>Real change, at its core, is about changing your subconscious goals.</blockquote>",
+                 "zh": "<blockquote>真正的改变，其核心在于改变你潜意识里的目标。</blockquote>"}
+            ]
+        },
+        {
+            "id": "part3",
+            "title": "Part III · 你害怕成为你想成为的人",
+            "pairs": [
+                {"en": "<strong>The Identity Loop (8 steps):</strong>",
+                 "zh": "<strong>身份认同的解剖图谱（8步循环）：</strong>"},
+                {"en": "1. You set a goal → 2. Perceive reality through its lens → 3. Notice only helpful info → 4. Act & get feedback → 5. Behavior becomes automatic → 6. It merges into identity (\"I'm the kind of person who...\") → <strong>7. You DEFEND that identity</strong> → 8. Identity shapes new goals.",
+                 "zh": "1. 设定目标 → 2. 通过目标滤镜感知现实 → 3. 只注意到有帮助的信息 → 4. 行动并接收反馈 → 5. 行为自动化 → 6. 融入自我身份（「我就是那种会...的人」）→ <strong>7. 你捍卫这个身份</strong> → 8. 身份塑造新目标。"},
+                {"en": "The key is breaking the loop between step 6 and 7. When your identity is threatened, your body reacts the same as a physical threat — <strong>fight or flight</strong>.",
+                 "zh": "关键在于第 6-7 步之间打破循环。当你的身份受到威胁时，你的身体反应和面对物理威胁一样——<strong>战或逃</strong>。"}
+            ]
+        },
+        {
+            "id": "part4",
+            "title": "Part IV · 心智的九个层级",
+            "pairs": [
+                {"en": "The life you want lives at a specific level of consciousness. Here are the <strong>9 levels of self-development</strong>:",
+                 "zh": "你想要的生活藏在心智的特定层级里。以下是 <strong>自我发展的九个层级</strong>："},
+                {"en": "<strong>Level 1 · Impulsive</strong> — Acts on impulse, black-and-white thinking.<br><strong>Level 2 · Self-Protective</strong> — World is dangerous, everything must favor self.<br><strong>Level 3 · Conformist</strong> — You ARE your group, group rules = truth.<br><strong>Level 4 · Self-Aware</strong> — Inner world and outer expression don't match.<br><strong>Level 5 · Principled</strong> — Build your own principle system.<br><strong>Level 6 · Individualistic</strong> — Realize your principles are shaped by environment.<br><strong>Level 7 · Strategic</strong> — Observe systems, knowing you're part of them.<br><strong>Level 8 · Construct-Aware</strong> — \"The map is not the territory.\" All frameworks are useful fictions.<br><strong>Level 9 · Unitive</strong> — Boundaries between self and life dissolve.",
+                 "zh": "<strong>层级 1 · 冲动型</strong> — 凭冲动行动，非黑即白思维。<br><strong>层级 2 · 自我保护型</strong> — 世界是危险的，一切都必须对自己有利。<br><strong>层级 3 · 从众型</strong> — 你就是你的群体，群体规则即真理。<br><strong>层级 4 · 自我觉察型</strong> — 内心世界与外部表达不匹配。<br><strong>层级 5 · 原则型</strong> — 建立自己的原则体系。<br><strong>层级 6 · 个人主义型</strong> — 意识到自己的原则受环境塑造。<br><strong>层级 7 · 战略型</strong> — 观察系统，同时知道自己也是系统的一部分。<br><strong>层级 8 · 建构觉察型</strong> — 「地图不等于领土」，所有框架都是有用的「虚构」。<br><strong>层级 9 · 合一型</strong> — 自我与生命的边界消融。"}
+            ]
+        },
+        {
+            "id": "part5",
+            "title": "Part V · 智慧与控制论",
+            "pairs": [
+                {"en": "<blockquote>The only real test of intelligence is if you get what you want out of life. <em>— Naval Ravikant</em></blockquote>",
+                 "zh": "<blockquote>衡量一个人是否真正聪明的唯一标准，就是看他能不能搞到自己想要的人生。<em>—— Naval Ravikant</em></blockquote>"},
+                {"en": "<strong>Cybernetics</strong> — from Greek <em>kybernetikos</em>, meaning \"the art of steering\":",
+                 "zh": "<strong>控制论（Cybernetics）</strong>——源自希腊语 <em>kybernetikos</em>，意为「掌舵的艺术」："},
+                {"en": "1. Set a goal, act toward it → 2. Sense current position, compare to goal → 3. Adjust action based on feedback.",
+                 "zh": "1. 设定目标，朝目标行动 → 2. 感知当前位置，与目标比较 → 3. 基于反馈调整行动。"},
+                {"en": "<strong>High intelligence</strong> = ability to iterate, persist, and see the big picture. <strong>Low intelligence</strong> = inability to learn from mistakes.",
+                 "zh": "<strong>高智能</strong> = 迭代、坚持、看清全局的能力。<strong>低智能</strong> = 无法从错误中学习。"},
+                {"en": "<blockquote>Given a large enough timescale, any problem can be solved.</blockquote>",
+                 "zh": "<blockquote>只要时间尺度足够大，任何问题都能解决。</blockquote>"}
+            ]
+        },
+        {
+            "id": "part6",
+            "title": "Part VI · 一日重启协议",
+            "pairs": [
+                {"en": "<strong class=\"subhead\">Morning: Psychological Excavation</strong>",
+                 "zh": "<strong class=\"subhead\">上午：心理挖掘</strong>"},
+                {"en": "<strong>Q1:</strong> Describe the vague, lingering dissatisfaction you've learned to live with.",
+                 "zh": "<strong>Q1：</strong>那种你已经学会忍受的、平淡却挥之不去的不满是什么？"},
+                {"en": "<strong>Q2:</strong> What do you complain about repeatedly but never change? For each complaint — what would an observer who only watches your <em>actions</em> (not your words) say you truly want?",
+                 "zh": "<strong>Q2：</strong>你反复抱怨却从不改变的是什么？对每个抱怨——一个只看你<em>行动</em>、不听你言语的观察者，会说你真正想要什么？"},
+                {"en": "<strong>Q3:</strong> What truth about your current life are you terrified to tell someone you deeply respect?",
+                 "zh": "<strong>Q3：</strong>关于你当前的生活，有什么真相是你害怕告诉一个你深深敬重的人的？"},
+                {"en": "<strong>Q4 (Anti-Vision):</strong> Describe an ordinary Tuesday 5 years from now if nothing changes. Where do you wake up? How do you feel? What's your first thought? Who's beside you? What are you doing from 9 to 6? How do you feel at 10 PM?",
+                 "zh": "<strong>Q4（反愿景）：</strong>如果 5 年什么都不变，描述一个普通的周二：在哪里醒来？感觉如何？第一个念头是什么？身边有谁？9 点到 6 点在做什么？晚上 10 点感受如何？"},
+                {"en": "<strong>Q5:</strong> Same description for 10 years: Which opportunities have closed? Who has given up on you? What do people say about you when you're not in the room?",
+                 "zh": "<strong>Q5：</strong>10 年后同样的描述：哪些机会已经关闭？谁已经放弃了你？你不在场时别人怎么评价你？"},
+                {"en": "<strong>Q6:</strong> At the end of your life — you lived the \"safe version.\" What was the cost? What feelings did you suppress?",
+                 "zh": "<strong>Q6：</strong>生命结束时——你活的是「安全版本」。代价是什么？你压抑了什么感受？"},
+                {"en": "<strong>Q7 (Minimum Viable Vision):</strong> Set aside feasibility. If you could snap your fingers and live a different life in 3 years, what would an ordinary Tuesday look like? Describe it in detail.",
+                 "zh": "<strong>Q7（最小可行愿景）：</strong>抛开可行性。如果你能打个响指在 3 年后过上另一种生活，那会是什么样？详细描述一个周二。"},
+                {"en": "<strong>Q8:</strong> Write your identity statement: \"I am the kind of person who...\" What's one thing \"that person\" would do this week?",
+                 "zh": "<strong>Q8：</strong>写下你的身份宣言：「我是那种会...的人。」「那种人」本周会做的一件事是什么？"},
+                {"en": "<strong class=\"subhead\">Daytime: Interrupt Autopilot</strong>",
+                 "zh": "<strong class=\"subhead\">白天：打断自动驾驶</strong>"},
+                {"en": "Set phone alarms:<br><strong>11:00 AM</strong> — What am I avoiding right now with whatever I'm doing?<br><strong>1:30 PM</strong> — If someone recorded my last 2 hours, what would they say I truly want?<br><strong>3:15 PM</strong> — Am I walking toward the life I dread or the life I desire?<br><strong>5:00 PM</strong> — What am I pretending isn't important when it actually matters most?<br><strong>7:30 PM</strong> — What did I do today to protect an old identity rather than from genuine desire?<br><strong>9:00 PM</strong> — When today was I most alive? When was I most numb?",
+                 "zh": "设置手机闹钟：<br><strong>11:00</strong> — 我此刻在做的事是在逃避什么？<br><strong>13:30</strong> — 如果有人录下我过去 2 小时，他们会说我真的想要什么？<br><strong>15:15</strong> — 我在走向我讨厌的人生，还是我渴望的人生？<br><strong>17:00</strong> — 我在假装什么不重要，而实际上它最重要？<br><strong>19:30</strong> — 今天做了什么是为了保护旧身份，而非出于真正的渴望？<br><strong>21:00</strong> — 今天什么时候最有活力？什么时候最麻木？"},
+                {"en": "<strong class=\"subhead\">Evening: Integration</strong>",
+                 "zh": "<strong class=\"subhead\">晚上：整合</strong>"},
+                {"en": "1. What's the <strong>real reason</strong> I'm stuck?<br>2. What's the real <strong>enemy</strong>? (Name that inner pattern / belief.)<br>3. <strong>One-sentence Anti-Vision</strong>: What will I NOT let my life become?<br>4. <strong>One-sentence Minimum Viable Vision</strong>: What am I building?<br>5. <strong>1-Year Goal</strong>: What specific outcome proves you broke the old pattern?<br>6. <strong>1-Month Project</strong>: What keeps the yearly goal possible?<br>7. <strong>Daily Leverage</strong>: 2-3 actions to lock in tomorrow.",
+                 "zh": "1. 我停滞不前的<strong>真正原因</strong>是什么？<br>2. 真正的<strong>「敌人」</strong>是什么？（命名那个内在的模式/信念）<br>3. <strong>一句话反愿景</strong>：我绝不让我的人生变成什么。<br>4. <strong>一句话最小可行愿景</strong>：我正在建设什么。<br>5. <strong>1 年目标</strong>：什么具体的事能证明你打破了旧模式？<br>6. <strong>1 月项目</strong>：什么能让年度目标保持可能？<br>7. <strong>每日杠杆</strong>：明天可以锁定的 2-3 个行动是什么？"}
+            ]
+        },
+        {
+            "id": "part7",
+            "title": "Part VII · 把人生变成一场游戏",
+            "pairs": [
+                {"en": "<strong>The 6 Gamification Elements:</strong>",
+                 "zh": "<strong>六个游戏化要素：</strong>"},
+                {"en": "<strong>Victory Condition → Vision</strong> — Provides direction and long-term motivation.<br><strong>Failure Penalty → Anti-Vision</strong> — Activates fear of regressing to a terrible state.<br><strong>Main Quest → 1-Year Goal</strong> — A single core priority.<br><strong>Boss Fight → 1-Month Project</strong> — Key XP and achievement milestones.<br><strong>Daily Quests → Daily Leverage Actions</strong> — Daily actions that unlock new opportunities.<br><strong>Game Rules → Non-Negotiable Constraints</strong> — Lines you will never cross.",
+                 "zh": "<strong>胜利条件 → 愿景</strong> — 提供方向和长期动力。<br><strong>失败惩罚 → 反愿景</strong> — 激活对退回糟糕状态的恐惧。<br><strong>主线任务 → 1 年目标</strong> — 单一核心优先事项。<br><strong>Boss战 → 1 月项目</strong> — 关键经验值和成就里程碑。<br><strong>每日任务 → 每日杠杆</strong> — 解锁新机会的日常行动。<br><strong>游戏规则 → 约束条件</strong> — 绝不牺牲的底线。"},
+                {"en": "<blockquote>Goals are not endpoints — they are a cognitive lens. Happiness and satisfaction lie in the process of continuous progress.</blockquote>",
+                 "zh": "<blockquote>目标并非为了「达成」而设定——它是一种认知透镜。快乐与满足，藏在不断进步的过程中。</blockquote>"},
+                {"en": "<blockquote>The only real test of intelligence is if you get what you want out of life.</blockquote>",
+                 "zh": "<blockquote>衡量一个人是否真正聪明的唯一标准，就是看他能不能搞到自己想要的人生。</blockquote>"}
+            ]
+        },
+        {
+            "id": "quotes",
+            "title": "核心金句 · Key Quotes",
+            "pairs": [
+                {"en": "<blockquote>You aren't where you want to be because you aren't the person who would be there.</blockquote>",
+                 "zh": "<blockquote>你到不了想去的地方，因为你还不是能站在那里的人。</blockquote>"},
+                {"en": "<blockquote>If you want a specific outcome in life, you must have the lifestyle that creates that outcome long before you reach it.</blockquote>",
+                 "zh": "<blockquote>若你渴望某种人生结果，必须在达成之前就过上能催生该结果的生活方式。</blockquote>"},
+                {"en": "<blockquote>Trust only movement. Life happens at the level of events, not of words.</blockquote>",
+                 "zh": "<blockquote>只相信行动。生活发生在事件的层面，而非言语的层面。</blockquote>"},
+                {"en": "<blockquote>Real change, at its core, is about changing your subconscious goals.</blockquote>",
+                 "zh": "<blockquote>真正的改变，其核心在于改变你潜意识里的目标。</blockquote>"},
+                {"en": "<blockquote>The only real test of intelligence is if you get what you want out of life.</blockquote>",
+                 "zh": "<blockquote>衡量聪明的唯一标准，是你能不能搞到自己想要的人生。</blockquote>"}
+            ]
+        }
+    ]
+}
+
+# Save standalone JSON
+json_path = f"{BASE}/data-fix-life.json"
+with open(json_path, 'w', encoding='utf-8') as f:
+    json.dump(data, f, ensure_ascii=False, indent=2)
+print(f"Saved: {json_path}")
+
+# Embed into HTML
+html_path = f"{BASE}/html/How-to-Fix-Your-Entire-Life-in-1-Day.html"
+with open(html_path, 'r', encoding='utf-8') as f:
+    html = f.read()
+
+data_json = json.dumps(data, ensure_ascii=False, indent=2)
+new_block = f"var data = {data_json};"
+
+# Replace data block (from "var data = {" to the next "};")
+pattern = r'var data = \{.*?\n\};'
+new_html, count = re.subn(pattern, new_block, html, flags=re.DOTALL)
+
+if count == 1:
+    print(f"Replaced data block in HTML")
+elif count == 0:
+    print("ERROR: Could not find data block!")
+    exit(1)
+
+with open(html_path, 'w', encoding='utf-8') as f:
+    f.write(new_html)
+
+total = sum(len(s['pairs']) for s in data['sections'])
+print(f"Sections: {len(data['sections'])}, Total pairs: {total}")
+print(f"File size: {len(new_html):,} bytes")
+
+# Validate
+assert 'var data = {' in new_html
+assert '<strong>' in new_html
+assert '<blockquote>' in new_html
+assert '<em>' in new_html
+assert '<br>' in new_html
+print("Validation: ALL formatting tags present")
+print("Done!")
